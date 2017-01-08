@@ -76,7 +76,7 @@ class SongCards extends Component {
         const items = playlistId in playlists ? playlists[playlistId].items : [];
 
         const MARGIN_TOP = 20;
-        const ROW_HEIGHT = 132;
+        const ROW_HEIGHT = 191.6;
         const ITEMS_PER_ROW = 1;
         const scrollY = window.scrollY;
 
@@ -85,10 +85,10 @@ class SongCards extends Component {
         let start = 0;
         let end = items.length;
 
-        //has the user scrolled past 2 rows of cards yet?
+        //has the user scrolled past the 3 topmost visible rows of cards yet?
         //if so, calculate px to pad the top of the scrollbar
         if ((scrollY - ((ROW_HEIGHT * 3) + (MARGIN_TOP * 2))) > 0) {
-            //don't include 2 rows' worth of height when calculating how many rows we need to pad, b/c that scroll height isn't in the feed
+            //we keep 2 rows above the viewport, so don't include that in our padding calculations
             const rowsToPad = Math.floor(
                 (scrollY - ((ROW_HEIGHT * 2) + (MARGIN_TOP))) / (ROW_HEIGHT + MARGIN_TOP)
             );
@@ -97,6 +97,7 @@ class SongCards extends Component {
         }
 
         const rowsOnScreen = Math.ceil(height / (ROW_HEIGHT + MARGIN_TOP));
+        //2 rows above viewport + 3 rows below viewport + rows on screen = total rows to show
         const itemsToShow = (rowsOnScreen + 5) * ITEMS_PER_ROW;
         //if the user isn't right at the bottom of the playlist, calculate px to pad the bottom of the scrollbar
         if (items.length > (start + itemsToShow)) {
@@ -123,14 +124,15 @@ class SongCards extends Component {
         const { authed, dispatch, playlistId, playlists, playingSongId, songs, users } = this.props;
         const items = playlistId in playlists ? playlists[playlistId].items : [];
 
-        const songCards = items.map((songId, i) => {
+        const songCards = items.slice(start, end).map((songId, i) => {
             const song = songs[songId];
             const scrollFunc = fetchSongsIfNeeded.bind(null, playlistId);
             const user = users[song.user_id];
-            const playSongFunc = this.playSong.bind(this, i);
+            const absoluteIndex = i + start;
+            const playSongFunc = this.playSong.bind(this, absoluteIndex);
 
             return (
-                <div className="songs-row" key={`${i}-${songId}`}>
+                <div className="songs-row" key={`${absoluteIndex}-${songId}`}>
                     <SongCard
                         authed={authed}
                         dispatch={dispatch}

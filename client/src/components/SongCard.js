@@ -41,28 +41,32 @@ class SongCard extends Component {
                 <div className="song-card-image" style={{ backgroundImage: `url(${image})`}}>
                 </div>
                 <div className="song-card-body">
-                    {togglePlayIcon}
-                    <div className="song-card-user clearfix">
-                        <img
-                            className="song-card-user-image"
-                            src={getImageUrl(user.avatar_url)}
-                        />
-                        <div className="song-card-details">
-                            <Link
-                                className="song-card-title"
-                                dispatch={dispatch}
-                                route={{ path: ["songs", song.id] }}
-                                title={song.title}
-                            >
-                                {formatSongTitle(song.title)}
-                            </Link>
-                            <SongHeart
-                                authed={authed}
-                                className="song-card-heart"
-                                dispatch={dispatch}
-                                isLiked={isLiked}
-                                songId={song.id}
-                            />
+                    <div className="song-card-header">
+                        {togglePlayIcon}
+                        <div className="song-card-title-container">
+                            <div className="song-card-user clearfix">
+                                <img
+                                    className="song-card-user-image"
+                                    src={getImageUrl(user.avatar_url)}
+                                />
+                                <div className="song-card-details">
+                                    <Link
+                                        className="song-card-title"
+                                        dispatch={dispatch}
+                                        route={{ path: ["songs", song.id] }}
+                                        title={song.title}
+                                    >
+                                        {formatSongTitle(song.title)}
+                                    </Link>
+                                    <SongHeart
+                                        authed={authed}
+                                        className="song-card-heart"
+                                        dispatch={dispatch}
+                                        isLiked={isLiked}
+                                        songId={song.id}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

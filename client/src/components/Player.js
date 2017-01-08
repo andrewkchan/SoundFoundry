@@ -78,6 +78,7 @@ class Player extends Component {
         }
         const { song } = this.props;
         this._audio.src = formatStreamUrl(song.stream_url);
+        this._audio.play();
     }
 
     componentWillUnmount() {
@@ -196,8 +197,7 @@ class Player extends Component {
      */
     seekTimeFinished(percent) {
         const { player } = this.props;
-        const { currentTime } = this.props;
-        this._audio.currentTime = currentTime;
+        this._audio.currentTime = Math.floor(percent * this.state.duration);
     }
 
     /*

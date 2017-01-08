@@ -24,10 +24,12 @@ class SeekBar extends Component {
     constructor(props) {
         super(props);
 
+        this.bindSeekEvents = this.bindSeekEvents.bind(this);
         this.handleClickSeek = this.handleClickSeek.bind(this);
         this.handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
         this.handleSeekMouseMove = this.handleSeekMouseMove.bind(this);
         this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
+        this.unbindSeekEvents = this.unbindSeekEvents.bind(this);
 
         const initialProgress = this.props.initialProgress ? this.props.initialProgress : 0.0;
         if (initialProgress < 0.0 || initialProgress > 1.0) {
@@ -35,6 +37,7 @@ class SeekBar extends Component {
         }
 
         this.state = {
+            barPos: 0, //position of the bar in the page
             progress: initialProgress, //a Number with value from 0.0 to 1.0 indicating seek progress.
             isSeeking: false,
             totalLength: 1 //length in px of the container element
@@ -44,13 +47,15 @@ class SeekBar extends Component {
     componentDidMount() {
         const seekBarContainer = ReactDOM.findDOMNode(this.refs.seekBarContainer);
         this.setState({
+            barPos: this.props.isVertical ? getOffsetTop(seekBarContainer) : getOffsetLeft(seekBarContainer),
             totalLength: this.props.isVertical ? seekBarContainer.offsetHeight : seekBarContainer.offsetWidth
         });
     }
 
     componentWillReceiveProps(nextProps) {
+        const { isSeeking } = this.state;
         const initialProgress = nextProps.initialProgress ? nextProps.initialProgress : 0.0;
-        if (initialProgress === this.state.progress) {
+        if (isSeeking || initialProgress === this.state.progress) {
             return;
         } else if (initialProgress < 0.0 || initialProgress > 1.0) {
             throw new Error("Cannot have progress of more than 1.0 or less than 0.0");
@@ -61,14 +66,28 @@ class SeekBar extends Component {
         });
     }
 
+    /*
+     * function bindSeekEvents
+     * Subscribe to mouse events that we use to track how the user drags this draggable item.
+     */
+    bindSeekEvents() {
+        document.addEventListener("mouseup", this.handleSeekMouseUp);
+        document.addEventListener("mousemove", this.handleSeekMouseMove);
+    }
+
     handleClickSeek(e) {
         const { isVertical, onSeek, seekFinished } = this.props;
-        const { totalLength } = this.state;
+        const { barPos, isSeeking, totalLength } = this.state;
         let percent;
         if (isVertical) {
-            percent = (e.clientY - getOffsetTop(e.currentTarget)) / totalLength;
+            percent = (e.clientY - barPos) / totalLength;
         } else {
-            percent = (e.clientX - getOffsetLeft(e.currentTarget)) / totalLength;
+            percent = (e.clientX - barPos) / totalLength;
+        }
+        if (isSeeking) {
+            this.setState({
+                isSeeking: false
+            });
         }
         onSeek(percent);
         seekFinished(percent);
@@ -78,24 +97,27 @@ class SeekBar extends Component {
         console.log("seek mouse down");
         this.setState({
             isSeeking: true
+        }, () => {
+            this.bindSeekEvents();
         });
     }
 
     handleSeekMouseMove(e) {
         console.log("seek mouse move");
         const { isVertical, onSeek } = this.props;
-        const { totalLength, isSeeking } = this.state;
+        const { barPos, totalLength, isSeeking } = this.state;
         if (isSeeking) {
             let diff;
             if (isVertical) {
-                diff = e.clientY - getOffsetTop(e.target);
+                diff = e.clientY - barPos;
             } else {
-                diff = e.clientX - getOffsetLeft(e.target);
+                diff = e.clientX - barPos;
             }
 
             const pos = diff < 0 ? 0 : diff;
             console.log("seek mouse pos:" + pos);
             let percent = pos / totalLength;
+            percent = percent > 1.0 ? 1.0 : percent;
             this.setState({
                 progress: percent
             }, () => { onSeek(this.state.progress); });
@@ -109,13 +131,21 @@ class SeekBar extends Component {
         if (isSeeking) {
             this.setState({
                 isSeeking: false
-            }, () => { seekFinished(this.state.progress); });
+            }, () => {
+                seekFinished(this.state.progress);
+                this.unbindSeekEvents();
+            });
         }
     }
 
     stopMouseClick(e) {
         e.preventDefault();
         e.stopPropagation();
+    }
+
+    unbindSeekEvents() {
+        document.removeEventListener("mouseup", this.handleSeekMouseUp);
+        document.removeEventListener("mousemove", this.handleSeekMouseMove);
     }
 
     render() {
@@ -137,8 +167,6 @@ class SeekBar extends Component {
                         className={`seek-bar-thumb ${thumbClassName}`}
                         onClick={this.stopMouseClick}
                         onMouseDown={this.handleSeekMouseDown}
-                        onMouseUp={this.handleSeekMouseUp}
-                        onMouseMove={this.handleSeekMouseMove}
                     >
                     </div>
                 </div>

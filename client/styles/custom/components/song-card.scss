@@ -1,5 +1,6 @@
 .song-card {
     padding: 10px;
+    display: flex;
 
     &.active {
         border-color: #A6D2A5;
@@ -8,8 +9,9 @@
 
 .song-card-image {
     display: block;
-    width: 100%;
-    height: 70px;
+    order: 1;
+    width: 160px;
+    height: 160px;
     margin-bottom: 10px;
     background-position: center center;
     background-repeat: no-repeat;
@@ -18,6 +20,32 @@
     &:hover {
         cursor: pointer;
     }
+}
+
+.song-card-body {
+    position: relative;
+    display: block;
+    order: 2;
+    flex: 1;
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+.song-card-header {
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100%;
+
+    .toggle-play-button {
+        margin-right: 5px;
+    }
+}
+
+.song-card-title-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .song-card-user {
