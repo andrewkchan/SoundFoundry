@@ -8,8 +8,8 @@
     "lint": "eslint scripts",
     "start": "webpack-dev-server --progress --colors --hot --content-base ./public --config ./webpack.config.js",
     "test": "mocha --compilers js:babel-core/register --recursive -r mock-local-storage",
-    "prebuild": "sed -i.bak \"s/'.*'/'${SOUND_REDUX_PROD:-f4323c6f7c0cd73d2d786a2b1cdae80c}'/\" ./scripts/constants/Config.js",
-    "postbuild": "sed -i.bak \"s/'.*'/'${SOUND_REDUX_DEV:-f4323c6f7c0cd73d2d786a2b1cdae80c}'/\" ./scripts/constants/Config.js && rm ./scripts/constants/Config.js.bak"
+    "prebuild": "sed -i.bak \"s/'.*'/'${SOUND_REDUX_PROD:-f4323c6f7c0cd73d2d786a2b1cdae80c}'/\" ./src/constants/config.js",
+    "postbuild": "sed -i.bak \"s/'.*'/'${SOUND_REDUX_DEV:-f4323c6f7c0cd73d2d786a2b1cdae80c}'/\" ./src/constants/config.js && rm ./src/constants/config.js.bak"
   },
   "repository": {
     "type": "git",
