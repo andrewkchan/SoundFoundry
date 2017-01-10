@@ -7,8 +7,9 @@ fully featured streaming music player.
 
 ## Installation and Quick Start
 
-1. `npm install`
-2. `npm start` to start a development server at localhost:8080. `npm run build` to build a production module at client/public/js/main.js.
+1. `cd client`
+2. `npm install`
+3. `npm start` to start a development server at localhost:8080. `npm run build` to build a production module at client/public/js/main.js.
 
 ## Credits
 
