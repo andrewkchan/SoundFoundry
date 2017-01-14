@@ -27,15 +27,15 @@
     display: block;
     order: 2;
     flex: 1;
+    flex-direction: column;
     margin-left: 5px;
     padding-left: 5px;
 }
 
 .song-card-header {
-    position: absolute;
-    top: 0;
     display: flex;
     width: 100%;
+    order: 1;
 
     .toggle-play-button {
         margin-right: 5px;

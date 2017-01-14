@@ -45,16 +45,18 @@ class SeekBar extends Component {
     }
 
     componentDidMount() {
-        const seekBarContainer = ReactDOM.findDOMNode(this.refs.seekBarContainer);
-        this.setState({
-            barPos: this.props.isVertical ? getOffsetTop(seekBarContainer) : getOffsetLeft(seekBarContainer),
-            totalLength: this.props.isVertical ? seekBarContainer.offsetHeight : seekBarContainer.offsetWidth
-        });
+        const seekBarContainer = this.seekBarContainer;
+        if (seekBarContainer != null) {
+            this.setState({
+                barPos: this.props.isVertical ? getOffsetTop(seekBarContainer) : getOffsetLeft(seekBarContainer),
+                totalLength: this.props.isVertical ? seekBarContainer.offsetHeight : seekBarContainer.offsetWidth
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         const { isSeeking } = this.state;
-        const initialProgress = nextProps.initialProgress ? nextProps.initialProgress : 0.0;
+        const initialProgress = nextProps.initialProgress ? nextProps.initialProgress : this.state.progress;
         if (isSeeking || initialProgress === this.state.progress) {
             return;
         } else if (initialProgress < 0.0 || initialProgress > 1.0) {
@@ -94,7 +96,6 @@ class SeekBar extends Component {
     }
 
     handleSeekMouseDown() {
-        console.log("seek mouse down");
         this.setState({
             isSeeking: true
         }, () => {
@@ -103,7 +104,6 @@ class SeekBar extends Component {
     }
 
     handleSeekMouseMove(e) {
-        console.log("seek mouse move");
         const { isVertical, onSeek } = this.props;
         const { barPos, totalLength, isSeeking } = this.state;
         if (isSeeking) {
@@ -115,7 +115,6 @@ class SeekBar extends Component {
             }
 
             const pos = diff < 0 ? 0 : diff;
-            console.log("seek mouse pos:" + pos);
             let percent = pos / totalLength;
             percent = percent > 1.0 ? 1.0 : percent;
             this.setState({
@@ -125,7 +124,6 @@ class SeekBar extends Component {
     }
 
     handleSeekMouseUp() {
-        console.log("seek mouse up");
         const { seekFinished } = this.props;
         const { isSeeking } = this.state;
         if (isSeeking) {
@@ -157,7 +155,7 @@ class SeekBar extends Component {
             <div
                 className={`seek-bar-container ${containerClassName}`}
                 onClick={this.handleClickSeek}
-                ref="seekBarContainer"
+                ref={(seekBarContainer) => { this.seekBarContainer = seekBarContainer; }}
             >
                 <div
                     className={`seek-bar-progress ${barClassName}`}

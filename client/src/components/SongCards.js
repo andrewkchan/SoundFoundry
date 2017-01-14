@@ -3,7 +3,6 @@ import infiniteScrollify from "../components/InfiniteScrollify";
 import SongCard from "../components/SongCard";
 
 import { playSong } from "../actions/PlayerActions";
-import { fetchSongsIfNeeded } from "../actions/PlaylistActions";
 
 const propTypes = {
     authed: PropTypes.object.isRequired,
@@ -126,7 +125,6 @@ class SongCards extends Component {
 
         const songCards = items.slice(start, end).map((songId, i) => {
             const song = songs[songId];
-            const scrollFunc = fetchSongsIfNeeded.bind(null, playlistId);
             const user = users[song.user_id];
             const absoluteIndex = i + start;
             const playSongFunc = this.playSong.bind(this, absoluteIndex);
@@ -138,7 +136,6 @@ class SongCards extends Component {
                         dispatch={dispatch}
                         isActive={song.id === playingSongId}
                         playSong={playSongFunc}
-                        scrollFunc={scrollFunc}
                         song={song}
                         user={user}
                     />

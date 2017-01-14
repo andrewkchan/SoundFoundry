@@ -13,6 +13,7 @@ const propTypes = {
     playingSongId: PropTypes.number,
     playlistId: PropTypes.string,
     playlists: PropTypes.object.isRequired,
+    scrollFunc: PropTypes.func.isRequired,
     sticky: PropTypes.bool,
     songs: PropTypes.object.isRequired,
     time: PropTypes.number,
