@@ -1,3 +1,41 @@
+@import 'constants/constants';
+@import 'utils/utils';
+
+//usual reset stuff
+*,
+*:before,
+*:after,
+ul,
+li,
+a,
+button,
+input,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+img,
+image,
+svg,
+path,
+g,
+canvas {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: transparent;
+	border: none;
+	text-decoration: none;
+	font-family: 'Roboto';
+	user-select: none;
+	list-style: none;
+	position: relative;
+	//color: #555459;
+}
+
 @import 'components/button';
 @import 'components/card';
 @import 'components/comment';
@@ -28,7 +66,6 @@
 @import 'components/spinner';
 @import 'components/switch';
 @import 'components/tab-content';
-@import 'components/toggle-play-button';
 @import 'components/toolbar';
 @import 'components/type';
 @import 'components/user';

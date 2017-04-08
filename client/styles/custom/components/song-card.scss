@@ -1,93 +1,144 @@
 .song-card {
-    padding: 10px;
-    display: flex;
+    padding: 1rem;
+    @include flex(flex-start, flex-start);
 
     &.active {
         border-color: #A6D2A5;
     }
+
+    &-image {
+        @include border-radius(5px, 5px, 5px, 5px);
+        display: block;
+        order: 1;
+        width: 160px;
+        height: 160px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &-header {
+        @include flex(flex-start, flex-start);
+        order: 1;
+        flex: 1;
+        width: 100%;
+    }
+
+    &-body {
+        position: relative;
+        display: block;
+        order: 2;
+        flex: 1;
+        @include flex(flex-start, flex-start, column);
+        margin-left: 5px;
+        padding-left: 5px;
+    }
+
+    &-title {
+        display: block;
+        color: #222;
+        font-size: 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &-container {
+            @include flex(flex-start, flex-start, column);
+            width: 100%;
+        }
+    }
+
+    &-user {
+        display: block;
+        width: 100%;
+
+        &-image {
+            display: block;
+            @include size(1.6rem, 1.6rem);
+            margin-top: 4px;
+            margin-right: 10px;
+            border-radius: 100%;
+            float: left;
+        }
+
+        &-username {
+            display: block;
+            margin-right: 30px;
+            font-size: 0.6rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    &-heart {
+        position: absolute;
+        bottom: -2px;
+        right: 0;
+        font-size: 14px;
+    }
+
 }
 
-.song-card-image {
-    display: block;
-    order: 1;
-    width: 160px;
-    height: 160px;
-    margin-bottom: 10px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+$play-button-radius: 35px;
+
+.toggle-play-button {
+    position: absolute;
+    right: 50px;
+    top: -35px;
+    border-radius: 100%;
+    @include size($play-button-radius * 2, $play-button-radius * 2);
+    @include flex(center, center);
+    box-shadow: $button-shadow;
+    //padding-left: 4px;
+    margin-bottom: 5px;
+    background-color: #A6D2A5;;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+
+    &-icon {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 30px;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    &.active {
+        background-color: rgba(0, 0, 0, 0.8);
+
+        .toggle-play-button-icon {
+            position: relative;
+            color: #A6D2A5;
+            z-index: 2;
+        }
+    }
+
+    &.is-playing {
+        .ion-ios-play {
+            display: none;
+        }
+
+        .ion-radio-waves {
+            display: inline-block;
+        }
+    }
 
     &:hover {
-        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.8);
+
+        .toggle-play-button-icon {
+            color: #A6D2A5;
+        }
     }
-}
 
-.song-card-body {
-    position: relative;
-    display: block;
-    order: 2;
-    flex: 1;
-    flex-direction: column;
-    margin-left: 5px;
-    padding-left: 5px;
-}
-
-.song-card-header {
-    display: flex;
-    width: 100%;
-    order: 1;
-
-    .toggle-play-button {
-        margin-right: 5px;
+    .ion-radio-waves {
+        display: none;
     }
-}
-
-.song-card-title-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.song-card-user {
-    display: block;
-    width: 100%;
-}
-
-.song-card-user-image {
-    display: block;
-    width: 24px;
-    height: 24px;
-    margin-top: 4px;
-    margin-right: 10px;
-    border-radius: 100%;
-    float: left;
 }
 
 .song-card-details {
     position: relative;
-}
-
-.song-card-user-username {
-    display: block;
-    margin-right: 30px;
-    font-size: 11px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.song-card-title {
-    display: block;
-    color: #222;
-    font-size: 11px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.song-card-heart {
-    position: absolute;
-    bottom: -2px;
-    right: 0;
-    font-size: 14px;
 }

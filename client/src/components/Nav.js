@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import Link from "../components/Link";
 import Popover from "../components/Popover";
+import CoolChartContainer from "../containers/CoolChartContainer";
 
 import { loginUser, logoutUser } from "../actions/AuthedActions";
 import { getImageUrl } from "../utils/SongUtils";
@@ -117,49 +118,78 @@ class Nav extends Component {
         }
 
         return (
-            <div className="nav-nav-item">
+            <div className="nav-item">
                 <Link
-                    className={`nav-nav-user-link ${route.path[1] === "stream" ? "active" : ""}`}
+                    className={`nav-user-link ${route.path[1] === "stream" ? "active" : ""}`}
                     dispatch={dispatch}
                     route={{ path: ["me", "stream"] }}
                 >
-                    {hasNewStreamSongs ? <div className="nav-nav-user-link indicator" /> : null}
-                    <span className="nav-nav-user-link-text">Stream</span>
+                    {hasNewStreamSongs ? <div className="nav-user-link indicator" /> : null}
+                    <span className="nav-user-link-text">Stream</span>
                 </Link>
             </div>
         );
     }
 
+    renderBottomSection() {
+        const { authed, route } = this.props;
+        if (!authed.user || route.path[1] === "stream") {
+            return (
+                <div className="nav-main">
+                    <div className="nav-middle">
+                        <div className="banner">
+                            <div className="banner-title">
+                                Like SoundCloud, but cooler.
+                            </div>
+                            <div className="banner-subtitle">
+                                By Andrew Chan
+                            </div>
+                        </div>
+                    </div>
+                    <div className="nav-bottom">
+                        <CoolChartContainer className="nav-bottom-canvas" />
+                        <div className="nav-bottom-pane">
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return null;
+    }
+
     render() {
         const { dispatch } = this.props;
         return (
-            <div className="nav">
-                <div className="container clearfix">
-                    <div className="nav-logo">
-                        <i className="icon ion-radio-waves" />
-                    </div>
-                    <div className="nav-nav float-left">
-                        <div className="nav-nav-item">
-                            <Link
-                                className="nav-nav-item-link active"
-                                dispatch={dispatch}
-                                route={{ path: ["songs"] }}
-                            >
-                                SoundFoundry
-                            </Link>
+            <div className="nav-bg">
+                <div className="nav">
+                    <div className="container clearfix">
+                        <div className="nav-left">
+                            <div className="nav-logo">
+                                <i className="icon ion-radio-waves" />
+                            </div>
+                            <div className="nav-item">
+                                <Link
+                                    className="nav-item-link active"
+                                    dispatch={dispatch}
+                                    route={{ path: ["songs"] }}
+                                >
+                                    soundfoundry
+                                </Link>
+                            </div>
+                            {this.renderStreamLink()}
+                            {this.renderLikesLink()}
+                        </div>
+                        <div className="nav-right">
+                            <div className="nav-item">
+                                (SEARCH PLACEHOLDER)
+                            </div>
+                            <div className="nav-item">
+                                {this.renderNavUser()}
+                            </div>
                         </div>
                     </div>
-                    {this.renderStreamLink()}
-                    {this.renderLikesLink()}
                 </div>
-                <div className="nav-nav float-right">
-                    <div className="nav-nav-item">
-                        (SEARCH PLACEHOLDER)
-                    </div>
-                    <div className="nav-nav-item">
-                        {this.renderNavUser()}
-                    </div>
-                </div>
+                {this.renderBottomSection()}
             </div>
         );
     }

@@ -1,76 +1,118 @@
 .nav {
-    height: 50px;
-    background-color: #3a3f41;
+    height: 60px;
+    box-shadow: $container-shadow;
 
     .container {
         height: 100%;
+        @include flex(center, space-between);
+    }
+    &-bg {
+        background-color: #444;
+    }
+    &-left {
+        flex: 1;
+        @include flex(center, flex-start);
+    }
+    &-right {
+        flex: 1;
+        @include flex(center, flex-end);
+    }
+
+    &-logo {
+        display: inline-block;
+        padding: 11px 0;
+        color: #fff;
+        font-size: 20px;
+    }
+    &-item-link {
+        display: inline-block;
+        margin: 10px 30px;
+        color: rgba(255,255,255, 0.5);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        &.active {
+            color: #fff;
+            text-decoration: none;
+        }
+    }
+
+    &-user-link {
+        display: flex;
+        align-items: center;
+        margin: 2px 40px 0;
+        color: #fff;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        &.active {
+            .nav-link-text {
+                color: #fff;
+                border-bottom-color: #fff;
+            }
+        }
+
+        &-text {
+            display: inline-block;
+            color: rgba(255,255,255, 0.5);
+            border-bottom: 1px dotted #3a3f41;
+            text-transform: uppercase;
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 2px;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:hover {
+                border-bottom-color: #fff;
+            }
+
+            .nav-nav-user-link-text {
+                color: #fff;
+                border-bottom-color: #fff;
+            }
+        }
+    }
+
+    &-middle {
+        height: 200px;
+        width: 100%;
+        @include flex(center, center);
+        color: #fff;
+    }
+
+    &-bottom {
+        height: 80px;
+        &-canvas {
+            @include size(100%, 50px);
+
+        }
+        &-pane {
+            height: 30px;
+            background-color: #fff;
+            box-shadow: $container-shadow;
+            border-bottom: 1px solid #e8e8e8;
+        }
     }
 };
 
-.nav-nav {
-    display: table;
-    height: 100%;
-}
-
-.nav-nav-item {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.nav-nav-item-link {
-    display: inline-block;
-    margin: 10px 30px;
-    color: rgba(255,255,255, 0.5);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-
-    &:hover {
-        text-decoration: none;
+.banner {
+    text-align: center;
+    font-weight: 500;
+    &-title {
+        font-size: 2rem;
     }
-
-    &.active {
-        color: #fff;
-        text-decoration: none;
-    }
-}
-
-.nav-nav-user-link {
-    display: flex;
-    align-items: center;
-    margin: 2px 40px 0;
-
-    &:hover {
-        text-decoration: none;
-    }
-
-    &.active {
-        .nav-nav-user-link-text {
-            color: #fff;
-            border-bottom-color: #fff;
-        }
-    }
-}
-
-.nav-nav-user-link-text {
-    display: inline-block;
-    color: rgba(255,255,255, 0.5);
-    border-bottom: 1px dotted #3a3f41;
-    text-transform: uppercase;
-    font-weight: 400;
-    font-size: 12px;
-    letter-spacing: 2px;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &:hover {
-        border-bottom-color: #fff;
-    }
-
-    .nav-nav-user-link-text {
-        color: #fff;
-        border-bottom-color: #fff;
+    &-subtitle {
+        font-size: 1.3rem;
+        color: #999;
     }
 }
 
@@ -80,35 +122,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.nav-logo {
-    display: inline-block;
-    padding: 11px 0;
-    color: #fff;
-    font-size: 20px;
-    float: left;
-}
-
-.nav-user-link {
-    display: flex;
-    align-items: center;
-    color: #fff;
-
-    &:hover {
-        cursor: pointer;
-    }
-
-    .ion-person {
-        margin-left: 30px;
-        font-size: 20px;
-    }
-
-    .ion-chevron-down, .ion-chevron-up {
-        margin-left: 6px;
-        color: #6B6B6B;
-        font-size: 10px;
-    }
 }
 
 .nav-user-popover {

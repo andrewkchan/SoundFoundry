@@ -2,8 +2,7 @@
 
 ## Introduction
 
-SoundFoundry is a barebones remake of the SoundCloud.com frontend using React and Redux. It features an infinitely scrollable track list drawn from SoundCloud and a
-fully featured streaming music player.
+SoundFoundry is a barebones remake of the SoundCloud.com frontend using React and Redux. It features an infinitely scrollable track list drawn from SoundCloud and a fully featured streaming music player.
 
 ## Installation and Quick Start
 
@@ -13,8 +12,7 @@ fully featured streaming music player.
 
 ## Credits
 
-The majority of the skeleton code is lifted verbatim from Andrew Ngu's [https://github.com/andrewngu/sound-redux](Sound-Redux project), but several major components have
-been changed to make better use of ES6 syntax and increase reusability. Also, I added comments to much of the codebase as Sound-Redux is very lacking in documentation.
+Heavily influenced by Andrew Ngu's [https://github.com/andrewngu/sound-redux](Sound-Redux project).
 
 SoundFoundry also makes use of the following libraries:
 

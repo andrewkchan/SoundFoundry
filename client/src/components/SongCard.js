@@ -13,8 +13,8 @@ const propTypes = {
     dispatch: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,
     playSong: PropTypes.func.isRequired,
-    song: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired
+    song: PropTypes.object.isRequired, //song object to display
+    user: PropTypes.object.isRequired //user object of the author of the song
 };
 
 class SongCard extends Component {
@@ -38,11 +38,16 @@ class SongCard extends Component {
 
         return (
             <div className="card song-card">
-                <div className="song-card-image" style={{ backgroundImage: `url(${image})`}}>
-                </div>
+                <Link
+                    dispatch={dispatch}
+                    route={{ path: ["songs", song.id] }}
+                    title={song.title}
+                >
+                    <div className="song-card-image" style={{ backgroundImage: `url(${image})`}}>
+                    </div>
+                </Link>
                 <div className="song-card-body">
                     <div className="song-card-header">
-                        {togglePlayIcon}
                         <div className="song-card-title-container">
                             <div className="song-card-user clearfix">
                                 <img
@@ -50,6 +55,9 @@ class SongCard extends Component {
                                     src={getImageUrl(user.avatar_url)}
                                 />
                                 <div className="song-card-details">
+                                    <div className="song-card-user-username">
+                                        {user.username}
+                                    </div>
                                     <Link
                                         className="song-card-title"
                                         dispatch={dispatch}
@@ -58,17 +66,18 @@ class SongCard extends Component {
                                     >
                                         {formatSongTitle(song.title)}
                                     </Link>
-                                    <SongHeart
-                                        authed={authed}
-                                        className="song-card-heart"
-                                        dispatch={dispatch}
-                                        isLiked={isLiked}
-                                        songId={song.id}
-                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {togglePlayIcon}
+                    <SongHeart
+                        authed={authed}
+                        className="song-card-heart"
+                        dispatch={dispatch}
+                        isLiked={isLiked}
+                        songId={song.id}
+                    />
                 </div>
             </div>
         );

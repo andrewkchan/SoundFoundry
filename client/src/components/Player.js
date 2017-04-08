@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 
 import SeekBar from "../components/SeekBar";
+import PlayerSongInfo from "../components/PlayerSongInfo";
 
 import { changeCurrentTime, changeSong, setIsPlaying, toggleIsPlaying } from "../actions/PlayerActions";
 import { formatSeconds, formatStreamUrl } from "../utils/FormatUtils";
-import { getImageUrl } from "../utils/SongUtils";
+
 import { CHANGE_TYPES } from "../constants/SongConstants";
 
 const propTypes = {
@@ -288,52 +289,53 @@ class Player extends Component {
             <div className="player">
                 <div className="container">
                     <div className="player-main">
-                        <div className="player-section player-info">
-                            <img
-                                className="player-image"
-                                src={getImageUrl(song.artwork_url)}
-                            />
-                            //
-                            //TODO: SongDetails component
-                            //
-                        </div>
-                        <div className="player-section">
-                            <div
-                                className="player-button"
-                                onClick={prevFunc}
-                            >
-                                <i className="icon ion-ios-rewind" />
+                        <PlayerSongInfo
+                            className="player-section"
+                            dispatch={dispatch}
+                            song={song}
+                            user={user}
+                        />
+                        <div className="player-middle">
+                            <div className="player-section">
+                                <div
+                                    className="player-button"
+                                    onClick={prevFunc}
+                                >
+                                    <i className="icon ion-ios-rewind" />
+                                </div>
+                                <div
+                                    className="player-button"
+                                    onClick={this.togglePlay}
+                                >
+                                    <i className={isPlaying ? "icon ion-ios-pause" : "icon ion-ios-play"} />
+                                </div>
+                                <div
+                                    className="player-button"
+                                    onClick={nextFunc}
+                                >
+                                    <i className="icon ion-ios-fastforward" />
+                                </div>
                             </div>
-                            <div
-                                className="player-button"
-                                onClick={this.togglePlay}
-                            >
-                                <i className={isPlaying ? "icon ion-ios-pause" : "icon ion-ios-play"} />
+                            <div className="player-section player-seek">
+                                <div className="player-seek-bar-wrap">
+                                    <SeekBar
+                                        barClassName="player-seek-bar"
+                                        containerClassName="player-seek-container"
+                                        initialProgress={currentTime/duration}
+                                        isVertical={false}
+                                        onSeek={this.onSeekTime}
+                                        progressClassName="player-seek-duration-bar"
+                                        seekFinished={this.seekTimeFinished}
+                                        thumbClassName="player-seek-handle"
+                                    />
+                                </div>
                             </div>
-                            <div
-                                className="player-button"
-                                onClick={nextFunc}
-                            >
-                                <i className="icon ion-ios-fastforward" />
+                            <div className="player-time">
+                                <span>{formatSeconds(currentTime)}</span>
+                                <span className="player-time-divider"></span>
+                                <span>{formatSeconds(duration)}</span>
                             </div>
-                        </div>
-                        <div className="player-section player-seek">
-                            <div className="player-seek-bar-wrap">
-                                <SeekBar
-                                    barClassName="player-seek-duration-bar"
-                                    containerClassName="player-seek-bar"
-                                    initialProgress={currentTime/duration}
-                                    isVertical={false}
-                                    onSeek={this.onSeekTime}
-                                    seekFinished={this.seekTimeFinished}
-                                    thumbClassName="player-seek-handle"
-                                />
-                            </div>
-                        </div>
-                        <div className="player-time">
-                            <span>{formatSeconds(currentTime)}</span>
-                            <span className="player-time-divider"></span>
-                            <span>{formatSeconds(duration)}</span>
+
                         </div>
                         <div className="player-section">
                             <div
@@ -361,11 +363,12 @@ class Player extends Component {
                         <div className="player-volume">
                             <div className="player-seek-bar-wrap">
                                 <SeekBar
-                                    barClassName="player-seek-duration-bar"
-                                    containerClassName="player-seek-bar"
+                                    barClassName="player-seek-bar"
+                                    containerClassName="player-seek-container"
                                     initialProgress={this.state.volume}
                                     isVertical={false}
                                     onSeek={this.onSeekVolume}
+                                    progressClassName="player-seek-duration-bar"
                                     seekFinished={this.seekVolumeFinished}
                                     thumbClassName="player-seek-handle"
                                 />

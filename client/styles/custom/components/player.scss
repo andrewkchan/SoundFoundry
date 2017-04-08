@@ -10,149 +10,153 @@
     -ms-user-select: none;
     z-index: 999;
 
+
     .song-card-details {
         overflow: hidden;
     }
-}
 
-.player-section {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    &-section {
+        @include flex(center, flex-start);
 
-    & + .player-section {
-        margin-left: 40px;
-    }
-}
-
-.player-main {
-    display: flex;
-    flex-direction: row;
-    padding: 8px;
-}
-
-.player-info {
-    width: 140px;
-}
-
-.player-image {
-    width: 30px;
-    height: 30px;
-    float: left;
-    margin-right: 8px;
-    flex-shrink: 0;
-}
-
-.player-button {
-    padding: 4px;
-
-    & > i {
-        color: #ccc;
+        & + .player-section {
+            margin-left: 40px;
+        }
     }
 
-    &.active {
+    &-middle {
+        flex: 1;
+    }
+
+    &-main {
+        @include flex(center, space-between);
+        padding: 8px;
+    }
+    &-middle {
+        @include flex(center, center, column);
+    }
+
+    &-info {
+        width: 140px;
+        &-text {
+            font-size: 0.8rem;
+        }
+        &-user {
+            font-size: 0.7rem;
+        }
+    }
+    &-image {
+        width: 30px;
+        height: 30px;
+        float: left;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+
+    &-button {
+        padding: 4px;
+
+        & > i {
+            color: #ccc;
+        }
+
+        &.active {
+            &:hover {
+                & i {
+                    color: #86AB85;
+                }
+            }
+
+            & > i {
+                color: #A6D2A5;
+            }
+        }
+
         &:hover {
-            & i {
+            cursor: pointer;
+
+            & > i {
+                color: #222;
+            }
+
+            .ion-ios-pause {
                 color: #86AB85;
             }
         }
 
-        & > i {
-            color: #A6D2A5;
-        }
-    }
-
-    &:hover {
-        cursor: pointer;
-
-        & > i {
-            color: #222;
+        & + .player-button {
+            margin-left: 30px;
         }
 
         .ion-ios-pause {
-            color: #86AB85;
+            color: #A6D2A5;
         }
     }
+    &-seek {
+        flex: 1;
+        &-container {
+            padding: 6px;
+        }
+        &-bar {
+            position: relative;
+            height: 4px;
+            background-color: #ddd;
+            @include border-radius(1px, 1px, 1px, 1px);
+            &-wrap {
+                padding: 6px 0;
+                flex: 1;
 
-    & + .player-button {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+        &-duration-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #A6D2A5;
+        }
+        &-handle {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            width: 12px;
+            height: 12px;
+            background-color: #fff;
+            border-radius: 50%;
+            border: 1px solid #e3e3e3;
+        }
+    }
+    &-time {
         margin-left: 30px;
-    }
-
-    .ion-ios-pause {
-        color: #A6D2A5;
-    }
-}
-
-.player-seek {
-    flex: 1;
-}
-
-.player-seek-bar-wrap {
-    padding: 6px 0;
-    flex: 1;
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.player-seek-bar {
-    position: relative;
-    height: 2px;
-    background-color: #ddd;
-}
-
-.player-seek-duration-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background-color: #A6D2A5;
-}
-
-.player-seek-handle {
-    position: absolute;
-    top: -5px;
-    right: -6px;
-    width: 12px;
-    height: 12px;
-    background-color: #fff;
-    border-radius: 50%;
-    border: 1px solid #e3e3e3;
-}
-
-.player-time {
-    margin-left: 30px;
-    color: #ccc;
-    font-size: 11px;
-}
-
-.player-time-divider {
-    margin: 0 10px;
-}
-
-.player-volume {
-    margin-left: 30px;
-    width: 100px;
-}
-
-.player-volume-button {
-    width: 12px;
-}
-
-.player-volume-button-wrap {
-    position: relative;
-
-    .ion-android-volume-up, .ion-android-volume-down {
-        z-index: 0;
-        color: #A6D2A5;
-    }
-
-    .ion-android-volume-mute {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
         color: #ccc;
+        font-size: 11px;
+        &-divider {
+            margin: 0 10px;
+        }
+    }
+    &-volume {
+        margin-left: 30px;
+        width: 100px;
+        &-button {
+            width: 12px;
+            &-wrap {
+                position: relative;
+
+                .ion-android-volume-up, .ion-android-volume-down {
+                    z-index: 0;
+                    color: #A6D2A5;
+                }
+
+                .ion-android-volume-mute {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 1;
+                    color: #ccc;
+                }
+            }
+        }
     }
 }

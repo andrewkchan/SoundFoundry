@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import { getOffsetLeft, getOffsetTop } from "../utils/MouseUtils";
 
 const propTypes = {
-    barClassName: PropTypes.string,         //the class attributes of the progress bar HTML element, which grows with progress
-    containerClassName: PropTypes.string,   //the class attributes of the progress bar container HTML element
+    barClassName: PropTypes.string,         //the class attribute of the bar containing the full seekable length, or the bar containing the progress bar.
+    containerClassName: PropTypes.string,   //the class attributes of the container padding around the progress bar.
     initialProgress: PropTypes.number,      //(should be between 0.0 and 1.0 inclusive) the initial progress of the seekbar.
     isVertical: PropTypes.bool,             //whether or not the seekbar is vertical. by default will be false.
     onSeek: PropTypes.func.isRequired,      //the callback with param (progress: Number) called whenever the mouse moves and thumb displaces.
+    progressClassName: PropTypes.string,    //the class attributes of the progress bar HTML element, which grows with progress
     seekFinished: PropTypes.func.isRequired, //the callback with param (progress: Number) to be called when seeking stops
     thumbClassName: PropTypes.string        //class attributes of the thumb HTML element
 };
@@ -147,7 +148,7 @@ class SeekBar extends Component {
     }
 
     render() {
-        const { barClassName, containerClassName, thumbClassName } = this.props;
+        const { barClassName, containerClassName, progressClassName, thumbClassName } = this.props;
         const { progress } = this.state;
         const progressLength = progress * 100;
 
@@ -158,14 +159,18 @@ class SeekBar extends Component {
                 ref={(seekBarContainer) => { this.seekBarContainer = seekBarContainer; }}
             >
                 <div
-                    className={`seek-bar-progress ${barClassName}`}
-                    style={{ width: `${progressLength}%`}}
+                    className={`seek-bar-body ${barClassName}`}
                 >
                     <div
-                        className={`seek-bar-thumb ${thumbClassName}`}
-                        onClick={this.stopMouseClick}
-                        onMouseDown={this.handleSeekMouseDown}
+                        className={`seek-bar-progress ${progressClassName}`}
+                        style={{ width: `${progressLength}%`}}
                     >
+                        <div
+                            className={`seek-bar-thumb ${thumbClassName}`}
+                            onClick={this.stopMouseClick}
+                            onMouseDown={this.handleSeekMouseDown}
+                        >
+                        </div>
                     </div>
                 </div>
             </div>
