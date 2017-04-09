@@ -12,10 +12,11 @@ SoundFoundry is a barebones remake of the SoundCloud.com frontend using React an
 
 ## Credits
 
-Heavily influenced by Andrew Ngu's [https://github.com/andrewngu/sound-redux](Sound-Redux project).
+Heavily influenced by Andrew Ngu's [Sound-Redux project](https://github.com/andrewngu/sound-redux).
 
 SoundFoundry also makes use of the following libraries:
 
-* [https://github.com/paularmstrong/normalizr](Normalizr)
-* [https://github.com/soundcloud/soundcloud-javascript](SoundCloud JavaScript API)
-* [https://github.com/gaearon/redux-thunk](Redux Thunk Middleware)
+* [Normalizr](https://github.com/paularmstrong/normalizr)
+* [SoundCloud JavaScript API](https://github.com/soundcloud/soundcloud-javascript)
+* [Redux Thunk Middleware](https://github.com/gaearon/redux-thunk)
+* [react-chartjs-2](https://github.com/gor181/react-chartjs-2), a React wrapper for [ChartJS](http://www.chartjs.org/)

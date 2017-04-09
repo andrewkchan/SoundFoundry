@@ -290,13 +290,19 @@ class Player extends Component {
                 <div className="container">
                     <div className="player-main">
                         <PlayerSongInfo
-                            className="player-section"
+                            className="player-section start"
                             dispatch={dispatch}
                             song={song}
                             user={user}
                         />
                         <div className="player-middle">
-                            <div className="player-section">
+                            <div className="player-middle-section">
+                                <div
+                                    className={`player-button ${this.state.shuffle ? "active" : ""}`}
+                                    onClick={this.toggleShuffle}
+                                >
+                                    <i className="icon ion-shuffle" />
+                                </div>
                                 <div
                                     className="player-button"
                                     onClick={prevFunc}
@@ -315,9 +321,16 @@ class Player extends Component {
                                 >
                                     <i className="icon ion-ios-fastforward" />
                                 </div>
+                                <div
+                                    className={`player-button ${this.state.repeat ? "active" : ""}`}
+                                    onClick={this.toggleRepeat}
+                                >
+                                    <i className="icon ion-loop" />
+                                </div>
                             </div>
-                            <div className="player-section player-seek">
-                                <div className="player-seek-bar-wrap">
+                            <div className="player-middle-section player-seek">
+                                <span>{formatSeconds(currentTime)}</span>
+                                <div className="player-seek-bar-wrap player-seek-duration-bar-wrap">
                                     <SeekBar
                                         barClassName="player-seek-bar"
                                         containerClassName="player-seek-container"
@@ -329,49 +342,30 @@ class Player extends Component {
                                         thumbClassName="player-seek-handle"
                                     />
                                 </div>
-                            </div>
-                            <div className="player-time">
-                                <span>{formatSeconds(currentTime)}</span>
-                                <span className="player-time-divider"></span>
                                 <span>{formatSeconds(duration)}</span>
                             </div>
-
                         </div>
-                        <div className="player-section">
+                        <div className="player-section end">
+                            {/*TODO: playlist popover menu*/}
                             <div
-                                className={`player-button ${this.state.repeat ? "active" : ""}`}
-                                onClick={this.toggleRepeat}
+                                className="player-button player-volume-button"
+                                onClick={this.toggleMute}
                             >
-                                <i className="icon ion-loop" />
+                                {volumeIcon}
                             </div>
-                            <div
-                                className={`player-button ${this.state.shuffle ? "active" : ""}`}
-                                onClick={this.toggleShuffle}
-                            >
-                                <i className="icon ion-shuffle" />
-                            </div>
-                        </div>
-                        //
-                        //TODO: Playlist popover menu
-                        //
-                        <div
-                            className="player-button player-volume-button"
-                            onClick={this.toggleMute}
-                        >
-                            {volumeIcon}
-                        </div>
-                        <div className="player-volume">
-                            <div className="player-seek-bar-wrap">
-                                <SeekBar
-                                    barClassName="player-seek-bar"
-                                    containerClassName="player-seek-container"
-                                    initialProgress={this.state.volume}
-                                    isVertical={false}
-                                    onSeek={this.onSeekVolume}
-                                    progressClassName="player-seek-duration-bar"
-                                    seekFinished={this.seekVolumeFinished}
-                                    thumbClassName="player-seek-handle"
-                                />
+                            <div className="player-volume">
+                                <div className="player-seek-bar-wrap">
+                                    <SeekBar
+                                        barClassName="player-seek-bar"
+                                        containerClassName="player-seek-container"
+                                        initialProgress={this.state.volume}
+                                        isVertical={false}
+                                        onSeek={this.onSeekVolume}
+                                        progressClassName="player-seek-duration-bar"
+                                        seekFinished={this.seekVolumeFinished}
+                                        thumbClassName="player-seek-handle"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

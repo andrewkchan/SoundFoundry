@@ -17,22 +17,27 @@
 
     &-section {
         @include flex(center, flex-start);
+        flex: 1;
 
-        & + .player-section {
-            margin-left: 40px;
+        &.start {
+            justify-content: flex-start;
+        }
+        &.end {
+            justify-content: flex-end;
         }
     }
 
     &-middle {
-        flex: 1;
+        flex: 3;
+        @include flex(center, center, column);
+        &-section {
+            @include flex(center, center);
+        }
     }
 
     &-main {
         @include flex(center, space-between);
         padding: 8px;
-    }
-    &-middle {
-        @include flex(center, center, column);
     }
 
     &-info {
@@ -93,18 +98,28 @@
     }
     &-seek {
         flex: 1;
+        color: #ccc;
+        font-size: 11px;
+        @include flex(center, space-between);
         &-container {
             padding: 6px;
+            &:hover {
+                .player-seek-duration-bar {
+                    background-color: #A6D2A5;
+                }
+                .player-seek-handle {
+                    @include size(13px, 13px);
+                }
+            }
         }
         &-bar {
             position: relative;
             height: 4px;
             background-color: #ddd;
-            @include border-radius(1px, 1px, 1px, 1px);
+            @include border-radius(2px, 2px, 2px, 2px);
             &-wrap {
                 padding: 6px 0;
-                flex: 1;
-
+                flex: 2;
                 &:hover {
                     cursor: pointer;
                 }
@@ -115,14 +130,18 @@
             top: 0;
             left: 0;
             height: 100%;
-            background-color: #A6D2A5;
+            background-color: #888;
+            @include border-radius(2px, 2px, 2px, 2px);
+            &-wrap {
+                //track duration only! not for volume bar
+                min-width: 400px;
+            }
         }
         &-handle {
             position: absolute;
             top: -5px;
             right: -6px;
-            width: 12px;
-            height: 12px;
+            @include size(12px, 12px);
             background-color: #fff;
             border-radius: 50%;
             border: 1px solid #e3e3e3;
@@ -130,8 +149,7 @@
     }
     &-time {
         margin-left: 30px;
-        color: #ccc;
-        font-size: 11px;
+
         &-divider {
             margin: 0 10px;
         }
