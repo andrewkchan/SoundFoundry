@@ -2,13 +2,16 @@ import types from "../constants/ActionTypes";
 import { CHANGE_TYPES } from "../constants/SongConstants";
 
 /*
- * Action changeCurrentTime
- * Scrub through the currently playing track to the given time.
+ * Action changeCurrentPercent
+ * Scrub through the currently playing track to the given percent.
+ * Set outofSync to TRUE if you want to force the player to change to the given percent when not seeking.
+ * Otherwise, the given percent will be reflected in UI elements but not by the actual audio player.
  */
-export function changeCurrentTime(time) {
+export function changeCurrentPercent(percent, outOfSync = false) {
     return {
-        type: types.CHANGE_CURRENT_TIME,
-        time
+        type: types.CHANGE_CURRENT_PERCENT,
+        percent,
+        outOfSync
     };
 }
 
@@ -16,10 +19,11 @@ export function changeCurrentTime(time) {
  * Action changePlayingSong
  * Change the currently playing song to the given index in the current playlist.
  */
-export function changePlayingSong(songIndex) {
+export function changePlayingSong(songIndex, percent = 0) {
     return {
         type: types.CHANGE_PLAYING_SONG,
-        songIndex
+        songIndex,
+        percent
     };
 }
 
@@ -28,7 +32,6 @@ export function changePlayingSong(songIndex) {
  * Change the currently playing playlist by ID, adding it to the list of selected playlist IDs if not already in it.
  */
 export function changeSelectedPlaylists(selectedPlaylistIds, playlistId) {
-    console.log("dispatched changeSelectedPlaylists action for playlistId" + playlistId);
     const index = selectedPlaylistIds.indexOf(playlistId);
 
     //if playlist is currently in list of playlists, move it to the tail end of the list.
@@ -76,11 +79,12 @@ export function changeSong(changeType) {
 /*
  * Action playSong
  * Play the song indexed by songIndex from the provided playlist.
+ * NOTE: songIndex !== songId!
  */
-export function playSong(playlistId, songIndex) {
+export function playSong(playlistId, songIndex, percent = 0) {
     return (dispatch, getState) => {
         console.log("dispatched playsong action for index " + songIndex);
-        dispatch(changeCurrentTime(0));
+        dispatch(changeCurrentPercent(0));
 
         const { player } = getState();
         const { selectedPlaylistIds } = player;
@@ -90,7 +94,7 @@ export function playSong(playlistId, songIndex) {
             dispatch(changeSelectedPlaylists(selectedPlaylistIds, playlistId));
         }
         //set the current song to the given index in the playlist
-        dispatch(changePlayingSong(songIndex));
+        dispatch(changePlayingSong(songIndex, percent));
     };
 }
 
@@ -98,6 +102,13 @@ export function setIsPlaying(isPlaying) {
     return {
         type: types.SET_IS_PLAYING,
         isPlaying
+    };
+}
+
+export function setIsSeeking(isSeeking) {
+    return {
+        type: types.SET_IS_SEEKING,
+        isSeeking
     };
 }
 

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Link from "../components/Link";
 import SongHeart from "../components/SongHeart";
 import TogglePlayButtonContainer from "../containers/TogglePlayButtonContainer";
+import WaveformSeekBarContainer from "../containers/WaveformSeekBarContainer";
 
 import { IMAGE_SIZES } from "../constants/SongConstants";
 import { formatSongTitle } from "../utils/FormatUtils";
@@ -30,7 +31,7 @@ class SongCard extends Component {
         }
         else {
             togglePlayIcon = (
-                <div className="toggle-play-button" onClick={playSong}>
+                <div className="toggle-play-button" onClick={() => { playSong(); }}>
                     <i className="toggle-play-button-icon ion-ios-play" />
                 </div>
             );
@@ -68,6 +69,7 @@ class SongCard extends Component {
                                     </Link>
                                 </div>
                             </div>
+                            <WaveformSeekBarContainer dispatch={dispatch} songId={song.id} playSong={playSong} />
                         </div>
                     </div>
                     {togglePlayIcon}

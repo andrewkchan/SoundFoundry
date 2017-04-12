@@ -12,7 +12,7 @@ SoundFoundry is a barebones remake of the SoundCloud.com frontend using React an
 
 ## Credits
 
-Heavily influenced by Andrew Ngu's [Sound-Redux project](https://github.com/andrewngu/sound-redux).
+Inspired and influenced by Andrew Ngu's [Sound-Redux project](https://github.com/andrewngu/sound-redux).
 
 SoundFoundry also makes use of the following libraries:
 

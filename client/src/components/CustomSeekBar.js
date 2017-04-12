@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import { getOffsetLeft, getOffsetTop } from "../utils/MouseUtils";
 
 const propTypes = {
+    className: PropTypes.string,                //className to pass down to the container element
+    children: PropTypes.object.isRequired,
     initialProgress: PropTypes.number,          //(should be between 0.0 and 1.0 inclusive) the initial progress of the seekbar.
     isVertical: PropTypes.bool,                 //whether or not the seekbar is vertical. by default will be false.
     onSeek: PropTypes.func.isRequired,          //the callback with param (progress: Number) called whenever the mouse moves and thumb displaces.
     seekFinished: PropTypes.func.isRequired,     //the callback with param (progress: Number) to be called when seeking stops
-    totalLength: PropTypes.number.isRequired
 };
 
 /*
@@ -21,9 +22,9 @@ class CustomSeekBar extends Component {
     constructor(props) {
         super(props);
 
-        if (props.children.length != 1) {
-            throw new Error("CustomSeekBar component requires exactly 1 child!");
-        }
+        // if (props.children.length != 1) {
+        //     throw new Error("CustomSeekBar component requires exactly 1 child!");
+        // }
 
         const initialProgress = this.props.initialProgress ? this.props.initialProgress : 0.0;
         if (initialProgress > 1.0 || initialProgress < 0.0) {
@@ -34,6 +35,7 @@ class CustomSeekBar extends Component {
             barPos: 0,
             isSeeking: false,
             progress: initialProgress,
+            totalLength: 1 //length in px of the seekbar element
         }
 
         this.bindSeekEvents = this.bindSeekEvents.bind(this);
@@ -42,6 +44,17 @@ class CustomSeekBar extends Component {
         this.handleSeekMouseMove = this.handleSeekMouseMove.bind(this);
         this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
         this.unbindSeekEvents = this.unbindSeekEvents.bind(this);
+    }
+
+    componentDidMount() {
+        const { children } = this.props;
+        const seekBarContainer = this.seekBarContainer;
+        if (seekBarContainer != null) {
+            this.setState({
+                barPos: this.props.isVertical ? getOffsetTop(seekBarContainer) : getOffsetLeft(seekBarContainer),
+                totalLength: this.props.isVertical ? seekBarContainer.offsetHeight : seekBarContainer.offsetWidth
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -68,8 +81,8 @@ class CustomSeekBar extends Component {
     }
 
     handleClickSeek(e) {
-        const { isVertical, onSeek, seekFinished, totalLength } = this.props;
-        const { barPos, isSeeking } = this.state;
+        const { isVertical, onSeek, seekFinished } = this.props;
+        const { barPos, isSeeking, totalLength } = this.state;
         let percent;
         if (isVertical) {
             percent = (e.clientY - barPos) / totalLength;
@@ -94,8 +107,8 @@ class CustomSeekBar extends Component {
     }
 
     handleSeekMouseMove(e) {
-        const { isVertical, onSeek, totalLength } = this.props;
-        const { barPos, isSeeking } = this.state;
+        const { isVertical, onSeek } = this.props;
+        const { barPos, isSeeking, totalLength } = this.state;
         if (isSeeking) {
             let diff;
             if (isVertical) {
@@ -132,10 +145,15 @@ class CustomSeekBar extends Component {
     }
 
     render() {
-        const { children } = this.props;
+        const { children, className } = this.props;
         return (
-            <div className="custom-seekbar-wrapper" onClick={this.handleClickSeek} onMouseDown={this.handleSeekMouseDown}>
-                {children[0]}
+            <div
+                className={`custom-seekbar-wrapper ${className}`}
+                onClick={this.handleClickSeek}
+                onMouseDown={this.handleSeekMouseDown}
+                ref={(seekBarContainer) => { this.seekBarContainer = seekBarContainer; }}
+            >
+                {children}
             </div>
         );
     }

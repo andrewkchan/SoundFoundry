@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import SeekBar from "../components/SeekBar";
 import PlayerSongInfo from "../components/PlayerSongInfo";
 
-import { changeCurrentTime, changeSong, setIsPlaying, toggleIsPlaying } from "../actions/PlayerActions";
+import { changeCurrentPercent, changeSong, setIsPlaying, setIsSeeking, toggleIsPlaying } from "../actions/PlayerActions";
 import { formatSeconds, formatStreamUrl } from "../utils/FormatUtils";
 
 import { CHANGE_TYPES } from "../constants/SongConstants";
@@ -36,7 +36,6 @@ class Player extends Component {
         Note that song changes should ALWAYS update props rather than state.
         */
         this.state = {
-            duration: 0, //duration lives in state, not props b/c we don't know song duration until song has been loaded by the HTMLAudio.
             muted: false,
             repeat: false,
             shuffle: false,
@@ -74,12 +73,20 @@ class Player extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.playingSongId && prevProps.playingSongId === this.props.playingSongId) {
-            return;
+        const { dispatch, song, player } = this.props;
+        let time = Math.floor(player.percent * (song.duration / 1000.0));
+        if (player.outOfSync) {
+            this._audio.currentTime = time;
+            dispatch(changeCurrentPercent(player.percent, false)); //turn off outOfSync flag
         }
-        const { song } = this.props;
-        this._audio.src = formatStreamUrl(song.stream_url);
-        this._audio.play();
+        if (prevProps.playingSongId !== this.props.playingSongId) {
+            this._audio.src = formatStreamUrl(song.stream_url);
+            if (player.outOfSync && !player.isSeeking) {
+                this._audio.currentTime = time;
+                dispatch(changeCurrentPercent(player.percent, false));
+            }
+            this._audio.play();
+        }
     }
 
     componentWillUnmount() {
@@ -116,9 +123,7 @@ class Player extends Component {
      * Handle when the audio player has successfully loaded song metadata.
      */
     handleLoadedMetadata() {
-        this.setState({
-            duration: Math.floor(this._audio.duration)
-        });
+        //empty
     }
 
     /*
@@ -127,10 +132,7 @@ class Player extends Component {
      */
     handleLoadStart() {
         const { dispatch } = this.props;
-        dispatch(changeCurrentTime(0));
-        this.setState({
-            duration: 0
-        });
+        dispatch(changeCurrentPercent(0.0));
     }
 
     handlePause() {
@@ -145,16 +147,16 @@ class Player extends Component {
 
     /*
      * function handleTimeUpdate
-     * Handle a time update event from the HTMLAudioElement.
+     * Handle a time update event from the HTMLAudioElement. Don't change time if currently out of sync with the desired time.
      */
     handleTimeUpdate(e) {
-        const { dispatch, player } = this.props;
+        const { dispatch, player, song } = this.props;
         const currentTime = Math.floor(this._audio.currentTime);
-        if (currentTime === player.currentTime) {
+        if (player.outOfSync) {
             return;
         }
 
-        dispatch(changeCurrentTime(currentTime));
+        dispatch(changeCurrentPercent(currentTime / (song.duration / 1000.0)));
     }
 
     /*
@@ -175,8 +177,11 @@ class Player extends Component {
      * @param   percent     A number between 0.0 and 1.0 indicating seek progress.
      */
     onSeekTime(percent) {
-        const { dispatch } = this.props;
-        dispatch(changeCurrentTime(Math.floor(percent * this.state.duration)));
+        const { dispatch, player } = this.props;
+        if (!player.isSeeking) {
+            dispatch(setIsSeeking(true));
+        }
+        dispatch(changeCurrentPercent(percent, true));
     }
 
     /*
@@ -197,8 +202,9 @@ class Player extends Component {
      * @param   percent     A number between 0.0 and 1.0 indicating seek progress.
      */
     seekTimeFinished(percent) {
-        const { player } = this.props;
-        this._audio.currentTime = Math.floor(percent * this.state.duration);
+        // const { player } = this.props;
+        const { dispatch } = this.props;
+        dispatch(setIsSeeking(false));
     }
 
     /*
@@ -255,10 +261,9 @@ class Player extends Component {
     }
 
     render() {
-        const { dispatch, player, playingSongId, songs, users } = this.props;
-        const { isPlaying, currentTime } = player;
-        const { duration, muted, volume } = this.state;
-        const song = songs[playingSongId];
+        const { dispatch, player, playingSongId, songs, song, users } = this.props;
+        const { isPlaying, percent } = player;
+        const { muted, volume } = this.state;
         const user = users[song.user_id];
         const prevFunc = this.changeSong.bind(this, CHANGE_TYPES.PREV);
         const nextFunc = this.changeSong.bind(
@@ -329,12 +334,12 @@ class Player extends Component {
                                 </div>
                             </div>
                             <div className="player-middle-section player-seek">
-                                <span>{formatSeconds(currentTime)}</span>
+                                <span>{formatSeconds(Math.floor(percent * (song.duration/1000.0)))}</span>
                                 <div className="player-seek-bar-wrap player-seek-duration-bar-wrap">
                                     <SeekBar
                                         barClassName="player-seek-bar"
                                         containerClassName="player-seek-container"
-                                        initialProgress={currentTime/duration}
+                                        initialProgress={percent}
                                         isVertical={false}
                                         onSeek={this.onSeekTime}
                                         progressClassName="player-seek-duration-bar"
@@ -342,7 +347,7 @@ class Player extends Component {
                                         thumbClassName="player-seek-handle"
                                     />
                                 </div>
-                                <span>{formatSeconds(duration)}</span>
+                                <span>{formatSeconds(Math.floor(song.duration / 1000.0))}</span>
                             </div>
                         </div>
                         <div className="player-section end">

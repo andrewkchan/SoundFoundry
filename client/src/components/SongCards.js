@@ -113,10 +113,9 @@ class SongCards extends Component {
         };
     }
 
-    playSong(index, e) {
-        e.preventDefault();
+    playSong(index, percent = 0) {
         const { playlistId, dispatch } = this.props;
-        dispatch(playSong(playlistId, index));
+        dispatch(playSong(playlistId, index, percent));
     }
 
     renderSongs(start, end) {

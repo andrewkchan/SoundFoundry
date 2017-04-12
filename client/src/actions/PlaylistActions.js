@@ -5,6 +5,12 @@ import { constructCategoryUrl } from "../utils/SongUtils";
 import { songSchema } from "../constants/schemas";
 import types from "../constants/ActionTypes";
 
+/*
+ * action fetchSongs
+ * Fetches a list of songs from the given URL and places them in the playlist enumerated by playlistId.
+ * @param   url         The SoundCloud API endpoint from which to request the songs.
+ * @param   playlistId  The id of the playlist to put the songs in.
+ */
 export function fetchSongs(url, playlistId) {
     return (dispatch, getState) => {
         const { authed } = getState();

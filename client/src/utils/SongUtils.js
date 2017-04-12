@@ -47,3 +47,25 @@ export function getImageUrl(s, size = null) {
             return s;
     }
 }
+
+export function getWaveformUrl(s) {
+    if (!s) {
+        return "";
+    }
+
+    s = s.replace("http:", "");
+    s = s.replace("w1", "wis");
+    s = s.replace("png", "json");
+
+    return s;
+}
+
+/*
+Prunes the waveform returned by soundcloud, only keeping every 18th data point.
+*/
+export function pruneWaveformSamples(waveform) {
+    waveform.samples = waveform.samples.filter((val, i) => {
+        return i % 18 === 0;
+    });
+    return waveform;
+}
