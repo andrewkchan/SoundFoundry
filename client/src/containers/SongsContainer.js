@@ -24,7 +24,7 @@ function mapStateToProps(state) {
     const playingSongId = getPlayingSongId(player, playlists);
 
     const time = query && query.t ? query.t : null; //the current time of the song being played, if reflected in the URL
-    let playlistId = query && query.q ? query.q : "house"; //the playlist currently being played, "house" (genre) if none
+    let playlistId = query && query.q ? query.q : "chill"; //the playlist currently being played, "chill" (genre) if none
     if (time) {
         playlistId = `${playlist} - ${time}`;
     }

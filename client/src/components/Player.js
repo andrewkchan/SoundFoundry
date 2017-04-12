@@ -69,22 +69,30 @@ class Player extends Component {
         this._audio.addEventListener("timeupdate", this.handleTimeUpdate, false);
         this._audio.addEventListener("volumechange", this.handleVolumeChange, false);
         this._audio.volume = this.state.volume;
-        this._audio.play();
+        const { player } = this.props;
+        if (player.isPlaying) {
+            this._audio.play();
+        }
     }
 
     componentDidUpdate(prevProps) {
         const { dispatch, song, player } = this.props;
+        //handle any time updates that may have occurred
         let time = Math.floor(player.percent * (song.duration / 1000.0));
-        if (player.outOfSync) {
-            this._audio.currentTime = time;
-            dispatch(changeCurrentPercent(player.percent, false)); //turn off outOfSync flag
-        }
         if (prevProps.playingSongId !== this.props.playingSongId) {
             this._audio.src = formatStreamUrl(song.stream_url);
             if (player.outOfSync && !player.isSeeking) {
                 this._audio.currentTime = time;
                 dispatch(changeCurrentPercent(player.percent, false));
             }
+        } else if (player.outOfSync) {
+            this._audio.currentTime = time;
+            dispatch(changeCurrentPercent(player.percent, false)); //turn off outOfSync flag
+        }
+        //handle playing and pausing updates
+        if (!player.isPlaying) {
+            this._audio.pause();
+        } else {
             this._audio.play();
         }
     }
@@ -136,13 +144,13 @@ class Player extends Component {
     }
 
     handlePause() {
-        const { dispatch } = this.props;
-        dispatch(setIsPlaying(false));
+        // const { dispatch } = this.props;
+        // dispatch(setIsPlaying(false));
     }
 
     handlePlay() {
-        const { dispatch } = this.props;
-        dispatch(setIsPlaying(true));
+        // const { dispatch } = this.props;
+        // dispatch(setIsPlaying(true));
     }
 
     /*
@@ -231,13 +239,15 @@ class Player extends Component {
      * Toggle audio playback.
      */
     togglePlay() {
-        const { isPlaying } = this.props.player;
+        const { dispatch, player } = this.props;
+        const { isPlaying } = player;
         if (isPlaying) {
-            this._audio.pause();
+            //this._audio.pause();
+            dispatch(setIsPlaying(false));
         } else {
-            this._audio.play();
+            //this._audio.play();
+            dispatch(setIsPlaying(true));
         }
-        //event handlers will do global state dispatches...
     }
 
     /*

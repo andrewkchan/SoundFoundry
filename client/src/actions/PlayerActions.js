@@ -84,7 +84,6 @@ export function changeSong(changeType) {
 export function playSong(playlistId, songIndex, percent = 0) {
     return (dispatch, getState) => {
         console.log("dispatched playsong action for index " + songIndex);
-        dispatch(changeCurrentPercent(0));
 
         const { player } = getState();
         const { selectedPlaylistIds } = player;
@@ -95,6 +94,7 @@ export function playSong(playlistId, songIndex, percent = 0) {
         }
         //set the current song to the given index in the playlist
         dispatch(changePlayingSong(songIndex, percent));
+        dispatch(setIsPlaying(true));
     };
 }
 
