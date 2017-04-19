@@ -1,7 +1,7 @@
 import types from "../constants/ActionTypes";
 
 const initialState = {
-    currentSongIndex: null,
+    currentSongIndex: null, //index of the currently playing song in the current playlist. NOT the ID of the song.
     percent: 0, //(between 0.0 and 1.0) how much of the current song we have played so far
     isPlaying: false,
     isSeeking: false,

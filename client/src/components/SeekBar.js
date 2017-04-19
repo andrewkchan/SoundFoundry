@@ -63,7 +63,6 @@ class SeekBar extends Component {
         } else if (initialProgress < 0.0 || initialProgress > 1.0) {
             throw new Error("Cannot have progress of more than 1.0 or less than 0.0");
         }
-
         this.setState({
             progress: initialProgress
         });
@@ -148,7 +147,7 @@ class SeekBar extends Component {
     }
 
     render() {
-        const { barClassName, containerClassName, progressClassName, thumbClassName } = this.props;
+        const { barClassName, containerClassName, progressClassName, thumbClassName, initialProgress } = this.props;
         const { progress } = this.state;
         const progressLength = progress * 100;
 
