@@ -19,6 +19,8 @@ const propTypes = {
     users: PropTypes.object.isRequired
 };
 
+const VOLUME_SCALE = 0.6; //full volume hurts my ears...
+
 /*
 Player Component
 
@@ -68,7 +70,7 @@ class Player extends Component {
         this._audio.addEventListener("play", this.handlePlay, false);
         this._audio.addEventListener("timeupdate", this.handleTimeUpdate, false);
         this._audio.addEventListener("volumechange", this.handleVolumeChange, false);
-        this._audio.volume = this.state.volume;
+        this._audio.volume = this.state.volume * VOLUME_SCALE;
         const { player } = this.props;
         if (player.isPlaying) {
             this._audio.play();
@@ -172,7 +174,7 @@ class Player extends Component {
      * Handle a volume changed event from the HTMLAudioElement.
      */
     handleVolumeChange(e) {
-        const volume = this._audio.volume;
+        const volume = this._audio.volume / VOLUME_SCALE;
         //LocalStorageUtils.set("volume", volume);
         this.setState({
             volume
@@ -201,7 +203,7 @@ class Player extends Component {
         this.setState({
             volume: percent
         });
-        this._audio.volume = percent;
+        this._audio.volume = percent * VOLUME_SCALE;
     }
 
     /*
@@ -224,7 +226,7 @@ class Player extends Component {
         this.setState({
             volume: percent
         });
-        this._audio.volume = percent;
+        this._audio.volume = percent * VOLUME_SCALE;
     }
 
     toggleMute() {

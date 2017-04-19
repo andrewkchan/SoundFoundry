@@ -1,6 +1,7 @@
 .nav {
     height: 60px;
     box-shadow: $container-shadow;
+    background-color: #000;
 
     .container {
         height: 100%;
@@ -16,6 +17,11 @@
     &-right {
         flex: 1;
         @include flex(center, flex-end);
+    }
+    &-main {
+        background-size: cover;
+        padding-top: 60px;
+        background-color: #000;
     }
 
     &-logo {

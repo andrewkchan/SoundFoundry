@@ -61,9 +61,9 @@ export function getWaveformImageUrl(waveform, width, height) {
 export function plotWaveform(waveform, canvas) {
     const ctx = canvas.getContext("2d");
     const points = waveform.samples;
-    const spacingW = 2;
-    const pointW = (canvas.offsetWidth / points.length);
-    const barW = pointW - spacingW;
+    const spacingW = 2; //width of space between each bar
+    const pointW = (canvas.offsetWidth / points.length); //"seat" each bar takes up. so the width of each bar + a spacer.
+    const barW = pointW - spacingW; //width of each bar
     const maxPoint = points.reduce((a, b) => { return Math.max(a,b); });
 
     ctx.fillStyle = "#ADF4E4";

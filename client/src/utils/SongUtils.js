@@ -43,6 +43,8 @@ export function getImageUrl(s, size = null) {
             return s.replace("large", IMAGE_SIZES.LARGE);
         case IMAGE_SIZES.XLARGE:
             return s.replace("large", IMAGE_SIZES.XLARGE);
+        case IMAGE_SIZES.ORIGINAL:
+            return s.replace("large", IMAGE_SIZES.ORIGINAL);
         default:
             return s;
     }

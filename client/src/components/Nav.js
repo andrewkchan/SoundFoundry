@@ -6,12 +6,16 @@ import CoolChartContainer from "../containers/CoolChartContainer";
 import { loginUser, logoutUser } from "../actions/AuthedActions";
 import { getImageUrl } from "../utils/SongUtils";
 
+import { IMAGE_SIZES } from "../constants/SongConstants";
+
 const propTypes = {
     authed: PropTypes.object.isRequired,
     authedPlaylists: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     navigator: PropTypes.object.isRequired,
-    songs: PropTypes.object.isRequired
+    player: PropTypes.object.isRequired,
+    songs: PropTypes.object.isRequired,
+    song: PropTypes.object
 };
 
 class Nav extends Component {
@@ -132,20 +136,26 @@ class Nav extends Component {
     }
 
     renderBottomSection() {
-        const { authed, route } = this.props;
+        const { authed, route, song } = this.props;
+        let songImage = null;
+        if (song !== null) {
+            songImage = getImageUrl(song.artwork_url, IMAGE_SIZES.ORIGINAL);
+        }
+        // let middle = (
+        //     <div className="nav-middle">
+        //         <div className="banner">
+        //             <div className="banner-title">
+        //                 Like SoundCloud, but cooler.
+        //             </div>
+        //             <div className="banner-subtitle">
+        //                 By Andrew Chan
+        //             </div>
+        //         </div>
+        //     </div>
+        // );
         if (!authed.user || route.path[1] === "stream") {
             return (
-                <div className="nav-main">
-                    <div className="nav-middle">
-                        <div className="banner">
-                            <div className="banner-title">
-                                Like SoundCloud, but cooler.
-                            </div>
-                            <div className="banner-subtitle">
-                                By Andrew Chan
-                            </div>
-                        </div>
-                    </div>
+                <div className="nav-main" style={songImage ? { backgroundImage: `url(${songImage})` } : null}>
                     <div className="nav-bottom">
                         <CoolChartContainer className="nav-bottom-canvas" />
                         <div className="nav-bottom-pane">
@@ -159,6 +169,7 @@ class Nav extends Component {
 
     render() {
         const { dispatch } = this.props;
+
         return (
             <div className="nav-bg">
                 <div className="nav">
@@ -181,7 +192,7 @@ class Nav extends Component {
                         </div>
                         <div className="nav-right">
                             <div className="nav-item">
-                                (SEARCH PLACEHOLDER)
+                                
                             </div>
                             <div className="nav-item">
                                 {this.renderNavUser()}

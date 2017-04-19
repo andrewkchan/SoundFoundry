@@ -73,9 +73,15 @@ const chartOptions = {
 class CoolChart extends Component {
     constructor(props) {
         super(props);
+        // this.audioCtx = new (window.audioContext || window.webkitAudioContext)();
+        // this.analyser = this.audioCtx.createAnalyser();
+        // this.analyser.fftSize = 32;
+        // let bufferLength = this.analyser.frequencyBinCount;
+        //
     }
     render() {
         const { player } = this.props;
+
         return (
             <Line data={sectionPlot0} options={chartOptions} height={50} />
         );
