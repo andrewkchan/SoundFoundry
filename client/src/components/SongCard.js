@@ -54,22 +54,8 @@ class SongCard extends Component {
                                 <img
                                     className="song-card-user-image"
                                     src={getImageUrl(user.avatar_url)}
-                                />
-                                <div className="song-card-details">
-                                    <div className="song-card-user-username">
-                                        {user.username}
-                                    </div>
-                                    <Link
-                                        className="song-card-title"
-                                        dispatch={dispatch}
-                                        route={{ path: ["songs", song.id] }}
-                                        title={song.title}
-                                    >
-                                        {formatSongTitle(song.title)}
-                                    </Link>
-                                </div>
+                                />                        
                             </div>
-                            <WaveformSeekBarContainer dispatch={dispatch} songId={song.id} playSong={playSong} />
                         </div>
                     </div>
                     {togglePlayIcon}
