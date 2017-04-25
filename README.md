@@ -2,7 +2,7 @@
 
 ## Introduction
 
-SoundFoundry is a barebones remake of the SoundCloud.com frontend using React and Redux. It features an infinitely scrollable track list drawn from SoundCloud and a fully featured streaming music player.
+SoundFoundry is a remake of the SoundCloud.com frontend using React and Redux. It features an infinitely scrollable track list drawn from SoundCloud and a fully featured streaming music player. Check out a demo [here](https://beautician-edward-85868.netlify.com/).
 
 ## Installation and Quick Start
 
