@@ -25,11 +25,13 @@ class WaveformSeekBar extends Component {
 
         this.state = {
             waveformImage: null, //TODO: placeholder waveform image?
-            percent: (initialProgress ? initialProgress : 0)
+            percent: (initialProgress ? initialProgress : 0),
+            mousePercent: 0
         };
         this.handleOnSeek = this.handleOnSeek.bind(this);
         this.handleSeekFinished = this.handleSeekFinished.bind(this);
         this.updateCanvas = this.updateCanvas.bind(this);
+        this.handleMouseOver = this.handleMouseOver.bind(this);
     }
     componentDidMount() {
         this.canvas.width = this.canvas.offsetWidth;
@@ -53,6 +55,12 @@ class WaveformSeekBar extends Component {
         }
     }
 
+    handleMouseOver(percent) {
+        this.setState({
+            mousePercent: percent
+        });
+    }
+
     handleOnSeek(percent) {
         const { dispatch, playSong, player, song } = this.props;
         if (!player.isSeeking) {
@@ -74,16 +82,17 @@ class WaveformSeekBar extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         const { initialProgress, song } = nextProps;
-        const { percent } = nextState;
+        const { percent, mousePercent } = nextState;
         return (percent !== this.state.percent) ||
             (initialProgress !== percent) ||
-            (song.waveform !== this.props.song.waveform);
+            (song.waveform !== this.props.song.waveform) ||
+            (mousePercent !== this.state.mousePercent && mousePercent >= percent);
     }
 
     updateCanvas() {
         const { song } = this.props;
         const { waveform } = song;
-        const { percent } = this.state;
+        const { percent, mousePercent } = this.state;
         if (waveform) {
             const ctx = this.canvas.getContext("2d");
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -91,6 +100,10 @@ class WaveformSeekBar extends Component {
 
             ctx.save();
             ctx.globalCompositeOperation = "source-atop";
+            if (mousePercent) {
+                ctx.fillStyle = "#72d3be";
+                ctx.fillRect(0, 0, this.canvas.width * mousePercent, this.canvas.height);
+            }
             ctx.fillStyle = "#5bad9b";
             ctx.fillRect(0, 0, this.canvas.width * percent, this.canvas.height);
             ctx.restore();
@@ -105,6 +118,7 @@ class WaveformSeekBar extends Component {
                 className="song-waveform"
                 initialProgress={percent}
                 isVertical={false}
+                onMouseOver={this.handleMouseOver}
                 onSeek={this.handleOnSeek}
                 seekFinished={this.handleSeekFinished}
             >

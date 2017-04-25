@@ -7,6 +7,8 @@ const propTypes = {
     children: PropTypes.object.isRequired,
     initialProgress: PropTypes.number,          //(should be between 0.0 and 1.0 inclusive) the initial progress of the seekbar.
     isVertical: PropTypes.bool,                 //whether or not the seekbar is vertical. by default will be false.
+    onMouseOver: PropTypes.func,                //the callback with param (progress: Number) called whenever the mouse is hovering over the seek bar
+    onMouseLeave: PropTypes.func,               //TODO
     onSeek: PropTypes.func.isRequired,          //the callback with param (progress: Number) called whenever the mouse moves and thumb displaces.
     seekFinished: PropTypes.func.isRequired,     //the callback with param (progress: Number) to be called when seeking stops
 };
@@ -32,16 +34,23 @@ class CustomSeekBar extends Component {
         }
 
         this.state = {
-            barPos: 0,
+            barPosX: 0,
+            barPosY: 0,
             isSeeking: false,
+            isMouseHovering: false,
             progress: initialProgress,
+            totalWidth: 1, //width in px of the seekbar element
             totalLength: 1 //length in px of the seekbar element
         }
 
         this.bindSeekEvents = this.bindSeekEvents.bind(this);
+        this.bindHoverEvents = this.bindHoverEvents.bind(this);
         this.handleClickSeek = this.handleClickSeek.bind(this);
+        this.handleMouseOver = this.handleMouseOver.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
         this.handleSeekMouseMove = this.handleSeekMouseMove.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
         this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
         this.unbindSeekEvents = this.unbindSeekEvents.bind(this);
     }
@@ -51,7 +60,9 @@ class CustomSeekBar extends Component {
         const seekBarContainer = this.seekBarContainer;
         if (seekBarContainer != null) {
             this.setState({
-                barPos: this.props.isVertical ? getOffsetTop(seekBarContainer) : getOffsetLeft(seekBarContainer),
+                barPosX: getOffsetLeft(seekBarContainer),
+                barPosY: getOffsetTop(seekBarContainer) + seekBarContainer.offsetHeight,
+                totalWidth: this.props.isVertical ? seekBarContainer.offsetWidth : seekBarContainer.offsetHeight,
                 totalLength: this.props.isVertical ? seekBarContainer.offsetHeight : seekBarContainer.offsetWidth
             });
         }
@@ -79,15 +90,27 @@ class CustomSeekBar extends Component {
         document.addEventListener("mouseup", this.handleSeekMouseUp);
         document.addEventListener("mousemove", this.handleSeekMouseMove);
     }
+    /*
+     * function bindHoverEvents
+     * Subscribe to mouse events that we use to track how the user moves over this item.
+     */
+    bindHoverEvents() {
+        const { isMouseHovering } = this.state;
+        if (!isMouseHovering) {
+            this.setState({
+                isMouseHovering: true
+            }, () => { document.addEventListener("mousemove", this.handleMouseMove); });
+        }
+    }
 
     handleClickSeek(e) {
         const { isVertical, onSeek, seekFinished } = this.props;
-        const { barPos, isSeeking, totalLength } = this.state;
+        const { barPosX, barPosY, isSeeking, totalLength } = this.state;
         let percent;
         if (isVertical) {
-            percent = (e.clientY - barPos) / totalLength;
+            percent = (e.clientY - barPosY) / totalLength;
         } else {
-            percent = (e.clientX - barPos) / totalLength;
+            percent = (e.clientX - barPosX) / totalLength;
         }
         if (isSeeking) {
             this.setState({
@@ -96,6 +119,43 @@ class CustomSeekBar extends Component {
         }
         onSeek(percent);
         seekFinished(percent);
+    }
+
+    handleMouseOver(e) {
+        this.bindHoverEvents();
+    }
+
+    handleMouseLeave(e) {
+        //TODO
+        //seems like onMouseLeave isn't always triggered so this may not be necessary
+    }
+
+    /*
+     * function handleMouseMove
+     * Called whenever the mouse moves over the seekbar element, not necessarily when seeking through the track.
+     */
+    handleMouseMove(e) {
+        const { isVertical, onMouseOver } = this.props;
+        if (onMouseOver) {
+            const { barPosX, barPosY, isSeeking, totalLength, totalWidth } = this.state;
+            const boundingRect = this.seekBarContainer.getBoundingClientRect();
+
+            const diffY = e.clientY - boundingRect.bottom;
+            const diffX = e.clientX - boundingRect.left;
+            const diff = isVertical ? Math.abs(diffY) : diffX;
+            //is the mouse still over the element or not?
+            const isMouseHovering = (boundingRect.left < e.clientX && e.clientX < boundingRect.right) &&
+                                    (boundingRect.top < e.clientY && e.clientY < boundingRect.bottom);
+            if (isMouseHovering) {
+                const pos = diff < 0 ? 0 : diff;
+                let percent = pos / totalLength;
+                percent = percent > 1.0 ? 1.0 : percent;
+                onMouseOver(percent);
+            } else {
+                onMouseOver(0);
+                this.unbindHoverEvents();
+            }
+        }
     }
 
     handleSeekMouseDown() {
@@ -108,13 +168,13 @@ class CustomSeekBar extends Component {
 
     handleSeekMouseMove(e) {
         const { isVertical, onSeek } = this.props;
-        const { barPos, isSeeking, totalLength } = this.state;
+        const { barPosX, barPosY, isSeeking, totalLength } = this.state;
         if (isSeeking) {
             let diff;
             if (isVertical) {
-                diff = e.clientY - barPos;
+                diff = e.clientY - barPosY;
             } else {
-                diff = e.clientX - barPos;
+                diff = e.clientX - barPosX;
             }
 
             const pos = diff < 0 ? 0 : diff;
@@ -143,6 +203,11 @@ class CustomSeekBar extends Component {
         document.removeEventListener("mouseup", this.handleSeekMouseUp);
         document.removeEventListener("mousemove", this.handleSeekMouseMove);
     }
+    unbindHoverEvents() {
+        this.setState({
+            isMouseHovering: false
+        }, () => { document.removeEventListener("mousemove", this.handleMouseMove); });
+    }
 
     render() {
         const { children, className } = this.props;
@@ -150,6 +215,8 @@ class CustomSeekBar extends Component {
             <div
                 className={`custom-seekbar-wrapper ${className}`}
                 onClick={this.handleClickSeek}
+                onMouseOver={this.handleMouseOver}
+                onMouseLeave={this.handleMouseLeave}
                 onMouseDown={this.handleSeekMouseDown}
                 ref={(seekBarContainer) => { this.seekBarContainer = seekBarContainer; }}
             >
