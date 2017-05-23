@@ -4,8 +4,24 @@
 }
 
 .container {
-    width: 1170px;
+    width: 600px;
     margin: 0 auto;
+}
+
+@media (min-width: $screen-sm-min) {
+    .container {
+        width: 768px;
+    }
+}
+@media (min-width: $screen-md-mid) {
+    .container {
+        width: 992px;
+    }
+}
+@media (min-width: $screen-lg-min) {
+    .container {
+        width: 1170px;
+    }
 }
 
 .clearfix:after {
