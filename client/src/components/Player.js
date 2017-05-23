@@ -26,6 +26,11 @@ const propTypes = {
     volume: PropTypes.number.isRequired,            //(0.0 to 1.0) volume level
 };
 
+/*
+Player Component
+
+The player bar at the bottom of the screen containing the song information, pause/play buttons, and seek bar.
+*/
 class Player extends Component {
     render() {
         const {

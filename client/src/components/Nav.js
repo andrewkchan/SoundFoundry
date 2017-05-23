@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Link from "../components/Link";
 import Popover from "../components/Popover";
 import CoolChartContainer from "../containers/CoolChartContainer";
+import NavSearch from "../components/NavSearch";
 
 import { loginUser, logoutUser } from "../actions/AuthedActions";
 import { getImageUrl } from "../utils/SongUtils";
@@ -192,7 +193,7 @@ class Nav extends Component {
                         </div>
                         <div className="nav-right">
                             <div className="nav-item">
-                                
+                                <NavSearch dispatch={dispatch} />
                             </div>
                             <div className="nav-item">
                                 {this.renderNavUser()}

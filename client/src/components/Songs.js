@@ -4,7 +4,6 @@ import { fetchSongsIfNeeded } from "../actions/PlaylistActions";
 
 import SongCards from "../components/SongCards";
 import stickify from "../components/stickify";
-//import Toolbar from "../components/Toolbar";
 
 const propTypes = {
     authed: PropTypes.object,

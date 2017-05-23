@@ -45,7 +45,7 @@ class WaveformSeekBar extends Component {
         const { song, player, initialProgress } = nextProps;
         const { percent } = this.state;
         const { waveform } = song;
-        if (this.props.song.waveform !== waveform) {
+        if (this.props.song.waveform !== waveform && waveform) {
             plotWaveform(waveform, this.canvas);
         }
         if (!player.isSeeking && initialProgress !== percent) {

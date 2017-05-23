@@ -1,13 +1,6 @@
 import types from "../constants/ActionTypes";
 import { constructUrl, parseUrl } from "../utils/RouteUtils";
 
-export function changePath(route) {
-    return {
-        type: types.CHANGE_PATH,
-        route
-    };
-}
-
 /*
  * Set browser back buttons and route navigation to work with our app.
  */
@@ -33,6 +26,9 @@ export function navigateBack(e) {
     };
 }
 
+/*
+ * Navigate to the specified route.
+ */
 export function navigateTo(route, shouldPushState = true) {
     return (dispatch, getState) => {
         const { navigator } = getState();
@@ -55,4 +51,11 @@ export function navigateTo(route, shouldPushState = true) {
  */
 function pushState(route) {
     history.pushState({ route }, "", `#/${constructUrl(route)}`);
+}
+
+export function changePath(route) {
+    return {
+        type: types.CHANGE_PATH,
+        route
+    };
 }
