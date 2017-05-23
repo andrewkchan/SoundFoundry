@@ -12,7 +12,7 @@ import { CHANGE_TYPES } from "../constants/SongConstants";
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
     player: PropTypes.object.isRequired,
-    playingSongId: PropTypes.number.isRequired,
+    playingSongId: PropTypes.number,
     playlists: PropTypes.object.isRequired,
     song: PropTypes.object,
     songs: PropTypes.object.isRequired,
@@ -44,13 +44,11 @@ class PlayerContainer extends Component {
             shuffle: false,
             volume: previousVolumeLevel || 1
         };
-        this._audio = new Audio(formatStreamUrl(song.stream_url));
+        this._audio = new Audio(song ? formatStreamUrl(song.stream_url) : null);
 
         this.handleEnded = this.handleEnded.bind(this);
         this.handleLoadedMetadata = this.handleLoadedMetadata.bind(this);
         this.handleLoadStart = this.handleLoadStart.bind(this);
-        this.handlePause = this.handlePause.bind(this);
-        this.handlePlay = this.handlePlay.bind(this);
         this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
         this.handleVolumeChange = this.handleVolumeChange.bind(this);
         this.onSeekVolumeFunc = this.onSeekVolumeFunc.bind(this);
@@ -80,6 +78,9 @@ class PlayerContainer extends Component {
 
     componentDidUpdate(prevProps) {
         const { dispatch, song, player } = this.props;
+        if (!song) {
+            return;
+        }
         //handle any time updates that may have occurred
         let time = Math.floor(player.percent * (song.duration / 1000.0));
         if (prevProps.playingSongId !== this.props.playingSongId) {
@@ -144,16 +145,6 @@ class PlayerContainer extends Component {
     handleLoadStart() {
         const { dispatch } = this.props;
         dispatch(changeCurrentPercent(0.0));
-    }
-
-    handlePause() {
-        // const { dispatch } = this.props;
-        // dispatch(setIsPlaying(false));
-    }
-
-    handlePlay() {
-        // const { dispatch } = this.props;
-        // dispatch(setIsPlaying(true));
     }
 
     /*
@@ -275,12 +266,17 @@ class PlayerContainer extends Component {
 
     render() {
         const { dispatch, player, song, users } = this.props;
+
+        if (!song) {
+            return null;
+        }
+
         const { muted, volume, repeat, shuffle } = this.state;
         const user = users[song.user_id];
         const prevFunc = this.changeSong.bind(this, CHANGE_TYPES.PREV);
         const nextFunc = this.changeSong.bind(
             this,
-            this.state.shuffle ? CHANGE_TYPES.SHUFFLE : CHANGE_TYPES.NEXT
+            shuffle ? CHANGE_TYPES.SHUFFLE : CHANGE_TYPES.NEXT
         );
 
         return (
@@ -297,10 +293,10 @@ class PlayerContainer extends Component {
                 repeat={repeat}
                 song={song}
                 shuffle={shuffle}
-                toggleMuteFunc={toggleMuteFunc}
-                togglePlayFunc={togglePlayFunc}
-                toggleRepeatFunc={toggleRepeatFunc}
-                toggleShuffleFunc={toggleShuffleFunc}
+                toggleMuteFunc={this.toggleMuteFunc}
+                togglePlayFunc={this.togglePlayFunc}
+                toggleRepeatFunc={this.toggleRepeatFunc}
+                toggleShuffleFunc={this.toggleShuffleFunc}
                 user={user}
                 volume={volume}
             />

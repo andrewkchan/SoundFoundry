@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from "react";
 import SeekBar from "../components/SeekBar";
 import PlayerSongInfo from "../components/PlayerSongInfo";
 
+import { formatSeconds } from "../utils/FormatUtils";
+
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
     muted: PropTypes.bool.isRequired,           //whether volume is muted or not
@@ -155,3 +157,7 @@ class Player extends Component {
         );
     }
 }
+
+Player.propTypes = propTypes;
+
+export default Player;
