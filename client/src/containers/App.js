@@ -8,12 +8,14 @@ import { initNav } from "../actions/NavActions";
 import NavContainer from "../containers/NavContainer";
 import PlayerContainer from "../containers/PlayerContainer";
 import SongsContainer from "../containers/SongsContainer";
+import SongContainer from "../containers/SongContainer";
 
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
     isMobile: PropTypes.bool,
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
+    path: PropTypes.array.isRequired
 };
 
 class App extends Component {
@@ -25,7 +27,27 @@ class App extends Component {
     }
 
     renderContent() {
-        return <SongsContainer />;
+        const { path } = this.props;
+        switch (path[0]) {
+            case "songs":
+                switch (path.length) {
+                    case 1:
+                        return <SongsContainer />;
+                    case 2:
+                        //TODO:return single song
+                        return <SongContainer songId={Number(path[1])} />;
+                    default:
+                        return null;
+                }
+            case "users":
+                //TODO: return user info
+                return null;
+            case "me":
+                //TODO: return my info
+                return null;
+            default:
+                return <SongsContainer />;
+        }
     }
 
     render() {

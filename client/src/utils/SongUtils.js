@@ -31,6 +31,18 @@ export function constructCategoryUrl(cat) {
     return result;
 }
 
+export function constructSongCommentsUrl(songId) {
+  return `//api.soundcloud.com/tracks/${songId}/comments?client_id=${CLIENT_ID}`;
+}
+
+export function constructSongUrl(songId) {
+  return `//api.soundcloud.com/tracks/${songId}?client_id=${CLIENT_ID}`;
+}
+
+export function constructUserSongsUrl(userId) {
+  return `//api.soundcloud.com/users/${userId}/tracks?client_id=${CLIENT_ID}`;
+}
+
 export function getImageUrl(s, size = null) {
     if (!s) {
         return "";

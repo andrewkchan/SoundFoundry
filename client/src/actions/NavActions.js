@@ -1,5 +1,6 @@
 import types from "../constants/ActionTypes";
 import { constructUrl, parseUrl } from "../utils/RouteUtils";
+import { initialRoute } from "../reducers/navigator";
 
 /*
  * Set browser back buttons and route navigation to work with our app.
@@ -12,6 +13,8 @@ export function initNav() {
 
         if (window.location.hash !== "") {
             dispatch(navigateTo(parseUrl(window.location.hash)));
+        } else if (window.location.pathname === "/") {
+            pushState(initialRoute);
         }
     };
 }

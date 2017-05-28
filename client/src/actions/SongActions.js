@@ -1,4 +1,9 @@
-import { getWaveformUrl, pruneWaveformSamples } from "../utils/SongUtils";
+import {
+    getWaveformUrl,
+    pruneWaveformSamples,
+    constructSongUrl,
+    constructUserSongsUrl
+} from "../utils/SongUtils";
 import types from "../constants/ActionTypes";
 
 export function fetchSongWaveform(songId, song) {
