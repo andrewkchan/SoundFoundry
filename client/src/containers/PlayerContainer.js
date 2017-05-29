@@ -69,6 +69,7 @@ class PlayerContainer extends Component {
         this._audio.addEventListener("play", this.handlePlay, false);
         this._audio.addEventListener("timeupdate", this.handleTimeUpdate, false);
         this._audio.addEventListener("volumechange", this.handleVolumeChange, false);
+        this._audio.addEventListener("error", (e) => { console.log("audio error", e); }); //TODO: handle 429 "unknown source" rate limit error
         this._audio.volume = this.state.volume * VOLUME_SCALE;
         const { player } = this.props;
         if (player.isPlaying) {

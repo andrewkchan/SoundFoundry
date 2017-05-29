@@ -15,6 +15,14 @@ export default function songs(state = initialState, action) {
                         waveform: action.waveform
                     }
                 };
+            case types.RECEIVE_SONG_COMMENTS:
+                return {
+                    ...state,
+                    [action.songId]: {
+                        ...state[action.songId],
+                        comments: action.comments
+                    }
+                };
             default:
                 return state;
         }

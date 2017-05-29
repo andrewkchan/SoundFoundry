@@ -64,11 +64,16 @@ export function fetchSongs(url, playlistId) {
             .catch(err => { throw err; });
     };
 }
-
+/*
+ * action fetchSongsIfNeeded
+ * Fetches a list of songs determined by playlistId if we should fetch more songs from that playlist.
+ * @param   playlistId  The id of the playlist to fetch songs from.
+ */
 export function fetchSongsIfNeeded(playlistId) {
     return (dispatch, getState) => {
         const { playlists } = getState();
         if (shouldFetchSongs(playlists, playlistId)) {
+            //get next URL for song pagination
             const nextUrl = getNextUrl(playlists, playlistId);
             return dispatch(fetchSongs(nextUrl, playlistId));
         }
@@ -87,12 +92,12 @@ function getNextUrl(playlists, playlistId) {
 /*
  * Action receiveSongs
  * Add the given songIds to the playlist with id playlistId, also adding the necessary entities.
- * @param   songs       An object with keys == songIds and values == song entities
- * @param   users       An object with keys == userIds and values == user entities
- * @param   songIds     A list of songIds to add to the playlist
- * @param   playlistId  The ID of the playlist to add the songs to
- * @param   nextUrl     String URL of the next page of the playlist
- * @param   futureUrl   String URL of the URL to poll new songs of the playlist from
+ * @param   {songs}       An object with keys == songIds and values == song entities
+ * @param   {users}       An object with keys == userIds and values == user entities
+ * @param   {songIds}     A list of songIds to add to the playlist
+ * @param   {playlistId}  The ID of the playlist to add the songs to
+ * @param   {nextUrl}     String URL of the next page of the playlist
+ * @param   {futureUrl}   String URL of the URL to poll new songs of the playlist from
  */
 export function receiveSongs({ songs, users, songIds, playlistId, nextUrl, futureUrl }) {
     return {
@@ -150,7 +155,8 @@ function requestSongs(playlistId) {
  */
 function shouldFetchSongs(playlists, playlistId) {
     const activePlaylist = playlists[playlistId];
-    if (!activePlaylist || (!activePlaylist.isFetching && (activePlaylist.nextUrl !== null))) {
+    if (!activePlaylist ||
+        (!activePlaylist.isFetching && (activePlaylist.nextUrl !== null))) {
         return true;
     }
     return false;

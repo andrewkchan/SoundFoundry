@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import SongCard from "../components/SongCard";
+import { SONG_PLAYLIST_SUFFIX } from "../constants/PlaylistConstants";
 
 import { getPlayingSongId } from "../utils/PlayerUtils";
+import { playSong } from "../actions/PlayerActions";
+import { fetchSongFullContentIfNeeded } from "../actions/SongActions";
 
 const propTypes = {
     authed: PropTypes.object.isRequired,
@@ -17,38 +20,52 @@ const propTypes = {
 class SongContainer extends Component {
     constructor(props) {
         super(props);
-        //
-        //TODO: fetch song and related songs if needed!!!
-        //
+        const { dispatch, songId } = this.props;
+        dispatch(fetchSongFullContentIfNeeded(songId));
+
+        this.playSong = this.playSong.bind(this);
     }
+
+    /*
+     * playSong
+     * Plays the song at the given index of this song's related songs playlist.
+     * @param   i   -The index of the related songs playlist to play.
+     */
+    playSong(i) {
+        const { dispatch, songId } = this.props;
+        const songPlaylistId = String(songId) + SONG_PLAYLIST_SUFFIX;
+        dispatch(playSong(songPlaylistId, i));
+    }
+
     render() {
         const { authed, dispatch, player, playlists, songs, songId, users } = this.props;
         const song = songs[songId];
-        const isActive = getPlayingSongId(player, playlists) === song.id;
-        const user = users[song.user_id];
 
-
-        //
-        //
-        //TODO: working play song function and related songs!!!
-        //
-        //
-
-
-        return (
-            <div className="content">
-                <div className="container">
-                    <SongCard
-                        authed={authed}
-                        dispatch={dispatch}
-                        isActive={isActive}
-                        playSong={() => { return null; }}
-                        song={song}
-                        user={user}
-                    />
+        if (song) {
+            const isActive = getPlayingSongId(player, playlists) === song.id;
+            const user = users[song.user_id];
+            return (
+                <div className="content">
+                    <div className="container">
+                        <SongCard
+                            authed={authed}
+                            dispatch={dispatch}
+                            isActive={isActive}
+                            playSong={this.playSong.bind(null, 0)}
+                            song={song}
+                            user={user}
+                        />
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className="content">
+                    <div className="container">
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
