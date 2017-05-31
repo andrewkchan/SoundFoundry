@@ -68,3 +68,11 @@
         opacity: 1;
     }
 }
+
+.song-comment {
+    flex: 1;
+    width: 100%;
+    padding: 0.2rem;
+    border-bottom: 1px solid #e8e8e8;
+    overflow-x: hidden;
+}

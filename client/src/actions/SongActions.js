@@ -11,6 +11,11 @@ import { songSchema } from "../constants/schemas";
 import types from "../constants/ActionTypes";
 import { SONG_PLAYLIST_SUFFIX } from "../constants/PlaylistConstants";
 
+/*
+ * Action fetchSongFullContentIfNeeded
+ * Fetches all the content of a song if the content has not already been fetched, including the song itself, comments, and related songs.
+ * @param   songId  -The id of the song to fetch content for.
+ */
 export function fetchSongFullContentIfNeeded(songId) {
     return (dispatch, getState) => {
         const { songs, playlists } = getState();
@@ -79,7 +84,7 @@ export function fetchSongFullContent(songId) {
 export function fetchSongRelatedContent(songId, userId, playlistId) {
     return (dispatch) => {
         dispatch(fetchSongComments(songId));
-        dispatch(fetchRelatedSongs(userId, playlistId));
+        dispatch(fetchRelatedSongs(songId, userId, playlistId));
     };
 }
 /*
@@ -97,15 +102,16 @@ export function fetchSongComments(songId) {
 /*
  * Action fetchRelatedSongs
  * Fetches the related songs for a given song.
+ * @param   songId  -The id of the given song.
  * @param   userId  -The id of the author of the song
  * @param   playlistId   -The id of the playlist to put related songs in
  */
-export function fetchRelatedSongs(userId, playlistId) {
+export function fetchRelatedSongs(songId, userId, playlistId) {
     return (dispatch) =>
         fetch(constructUserSongsUrl(userId))
             .then(response => response.json())
             .then(json => {
-                const songs = json;
+                const songs = json.filter((song) => { return song.id !== songId; });
                 const normalized = normalize(songs, arrayOf(songSchema));
                 dispatch(receiveSongs({
                     songs: normalized.entities.songs,

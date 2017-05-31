@@ -1,20 +1,22 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
-2 info using npm@3.10.8
-3 info using node@v6.9.1
-4 verbose stack Error: ENOENT: no such file or directory, open '/mnt/c/Users/Andrew/Documents/soundfoundry/package.json'
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\Andrew\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'start' ]
+2 info using npm@4.0.5
+3 info using node@v4.4.7
+4 verbose stack Error: ENOENT: no such file or directory, open 'C:\Users\Andrew\Documents\soundfoundry\package.json'
 4 verbose stack     at Error (native)
-5 verbose cwd /mnt/c/Users/Andrew/Documents/soundfoundry
-6 error Linux 4.4.0-43-Microsoft
-7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
-8 error node v6.9.1
-9 error npm  v3.10.8
-10 error path /mnt/c/Users/Andrew/Documents/soundfoundry/package.json
+5 verbose cwd C:\Users\Andrew\Documents\soundfoundry
+6 error Windows_NT 10.0.15063
+7 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\Andrew\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "start"
+8 error node v4.4.7
+9 error npm  v4.0.5
+10 error path C:\Users\Andrew\Documents\soundfoundry\package.json
 11 error code ENOENT
-12 error errno -2
+12 error errno -4058
 13 error syscall open
-14 error enoent ENOENT: no such file or directory, open '/mnt/c/Users/Andrew/Documents/soundfoundry/package.json'
-15 error enoent ENOENT: no such file or directory, open '/mnt/c/Users/Andrew/Documents/soundfoundry/package.json'
+14 error enoent ENOENT: no such file or directory, open 'C:\Users\Andrew\Documents\soundfoundry\package.json'
+15 error enoent ENOENT: no such file or directory, open 'C:\Users\Andrew\Documents\soundfoundry\package.json'
 15 error enoent This is most likely not a problem with npm itself
 15 error enoent and is related to npm not being able to find a file.
-16 verbose exit [ -2, true ]
+16 verbose exit [ -4058, true ]

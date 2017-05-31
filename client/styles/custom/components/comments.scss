@@ -9,3 +9,9 @@
 .comments-header-title {
   flex: 1;
 }
+
+.song-comments {
+    margin-top: 1rem;
+    padding: 1rem;
+    @include flex(flex-start, flex-start, column);
+}

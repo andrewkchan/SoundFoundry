@@ -31,10 +31,26 @@ class SongContainer extends Component {
      * Plays the song at the given index of this song's related songs playlist.
      * @param   i   -The index of the related songs playlist to play.
      */
-    playSong(i) {
+    playSong(i, percent) {
         const { dispatch, songId } = this.props;
         const songPlaylistId = String(songId) + SONG_PLAYLIST_SUFFIX;
-        dispatch(playSong(songPlaylistId, i));
+        dispatch(playSong(songPlaylistId, i, percent));
+    }
+
+    renderComments() {
+        const { songs, songId } = this.props;
+        const song = songs[songId];
+        if (song && song.comments) {
+            return song.comments.map((comment, i) => {
+                return (
+                    <div className="song-comment" key={i}>
+                        <div className="song-comment-body">
+                            {comment.body}
+                        </div>
+                    </div>
+                );
+            });
+        }
     }
 
     render() {
@@ -51,10 +67,13 @@ class SongContainer extends Component {
                             authed={authed}
                             dispatch={dispatch}
                             isActive={isActive}
-                            playSong={this.playSong.bind(null, 0)}
+                            playSong={this.playSong.bind(this, 0)}
                             song={song}
                             user={user}
                         />
+                        <div className="card song-comments">
+                            {this.renderComments()}
+                        </div>
                     </div>
                 </div>
             );
