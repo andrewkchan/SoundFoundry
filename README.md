@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/theandrewchan/SoundFoundry.svg?branch=master)](https://travis-ci.org/theandrewchan/SoundFoundry)
+
 # SoundFoundry
 
 ## Introduction
