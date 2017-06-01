@@ -6,6 +6,8 @@ import { SONG_PLAYLIST_SUFFIX } from "../constants/PlaylistConstants";
 import { getPlayingSongId } from "../utils/PlayerUtils";
 import { playSong } from "../actions/PlayerActions";
 import { fetchSongFullContentIfNeeded } from "../actions/SongActions";
+import { getImageUrl } from "../utils/SongUtils";
+import { formatSeconds } from "../utils/FormatUtils";
 
 const propTypes = {
     authed: PropTypes.object.isRequired,
@@ -38,14 +40,25 @@ class SongContainer extends Component {
     }
 
     renderComments() {
-        const { songs, songId } = this.props;
+        const { songs, songId, users } = this.props;
         const song = songs[songId];
         if (song && song.comments) {
             return song.comments.map((comment, i) => {
+                const user = comment.user;
+                const songTime = formatSeconds(Math.round(comment.timestamp/1000.0));
                 return (
                     <div className="song-comment" key={i}>
+                        <img
+                            className="song-comment-img"
+                            src={getImageUrl(user.avatar_url)}
+                        />
                         <div className="song-comment-body">
-                            {comment.body}
+                            <div className="song-comment-body-user">
+                                {`${user.username} at ${songTime}`}
+                            </div>
+                            <div className="song-comment-body-text">
+                                {comment.body}
+                            </div>
                         </div>
                     </div>
                 );
@@ -72,6 +85,9 @@ class SongContainer extends Component {
                             user={user}
                         />
                         <div className="card song-comments">
+                            <div className="song-comments-header">
+                                Comments
+                            </div>
                             {this.renderComments()}
                         </div>
                     </div>

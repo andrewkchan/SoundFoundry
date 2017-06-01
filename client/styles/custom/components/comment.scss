@@ -73,6 +73,23 @@
     flex: 1;
     width: 100%;
     padding: 0.2rem;
-    border-bottom: 1px solid #e8e8e8;
+    border-top: 1px solid #e8e8e8;
     overflow-x: hidden;
+    @include flex(flex-start, flex-start);
+    &-img {
+        @include size(50px, 50px);
+        padding: 5px;
+    }
+    &-body {
+        @include flex(flex-start, flex-start, column);
+        padding: 5px;
+        &-user {
+            margin-bottom: 2px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        &-text {
+            font-size: 0.9rem;
+        }
+    }
 }

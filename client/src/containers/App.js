@@ -34,7 +34,6 @@ class App extends Component {
                     case 1:
                         return <SongsContainer />;
                     case 2:
-                        //TODO:return single song
                         return <SongContainer songId={Number(path[1])} />;
                     default:
                         return null;

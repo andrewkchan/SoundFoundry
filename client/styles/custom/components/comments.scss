@@ -14,4 +14,9 @@
     margin-top: 1rem;
     padding: 1rem;
     @include flex(flex-start, flex-start, column);
+    &-header {
+        margin-bottom: 1rem;
+        text-transform: capitalize;
+        font-size: 1.1rem;
+    }
 }
