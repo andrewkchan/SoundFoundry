@@ -50,7 +50,6 @@ class CustomSeekBar extends Component {
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
         this.handleSeekMouseMove = this.handleSeekMouseMove.bind(this);
-        this.handleMouseLeave = this.handleMouseLeave.bind(this);
         this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
         this.unbindSeekEvents = this.unbindSeekEvents.bind(this);
     }
@@ -123,11 +122,6 @@ class CustomSeekBar extends Component {
 
     handleMouseOver(e) {
         this.bindHoverEvents();
-    }
-
-    handleMouseLeave(e) {
-        //TODO
-        //seems like onMouseLeave isn't always triggered so this may not be necessary
     }
 
     /*
@@ -216,7 +210,6 @@ class CustomSeekBar extends Component {
                 className={`custom-seekbar-wrapper ${className}`}
                 onClick={this.handleClickSeek}
                 onMouseOver={this.handleMouseOver}
-                onMouseLeave={this.handleMouseLeave}
                 onMouseDown={this.handleSeekMouseDown}
                 ref={(seekBarContainer) => { this.seekBarContainer = seekBarContainer; }}
             >

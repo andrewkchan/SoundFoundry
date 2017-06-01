@@ -21,7 +21,7 @@ export default function player(state = initialState, action) {
             return { ...state, selectedPlaylistIds: action.selectedPlaylistIds };
 
         case types.RESET_AUTHED:
-            return { ...initalState };
+            return { ...initialState };
 
         case types.SET_IS_PLAYING:
             return { ...state, isPlaying: action.isPlaying };

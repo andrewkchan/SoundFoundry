@@ -133,16 +133,21 @@ export function removeUnlikedSongsPre() {
 /*
  * Action removedUnlikedSongs
  * Prune all unliked songs.
- * @param   songs   The liked song IDs that we want to keep. All other songs are pruned.
+ * @param   songs   An array of the liked song IDs that we want to keep. All other songs are pruned.
  */
-function removeUnlikedSongs(songs) {
+export function removeUnlikedSongs(songs) {
     return {
         type: types.REMOVE_UNLIKED_SONGS,
         songs
     };
 }
 
-function requestSongs(playlistId) {
+/*
+ * Action requestSongs
+ * Set the given playlist to a requesting state.
+ * @param   playlistId   ID of the playlist requesting songs.
+ */
+export function requestSongs(playlistId) {
     return {
         type: types.REQUEST_SONGS,
         playlistId
@@ -153,7 +158,7 @@ function requestSongs(playlistId) {
  * shouldFetchSongs
  * @return  Whether the given playlist ID needs to be fetched or not.
  */
-function shouldFetchSongs(playlists, playlistId) {
+export function shouldFetchSongs(playlists, playlistId) {
     const activePlaylist = playlists[playlistId];
     if (!activePlaylist ||
         (!activePlaylist.isFetching && (activePlaylist.nextUrl !== null))) {

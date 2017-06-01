@@ -1,6 +1,6 @@
 import types from "../constants/ActionTypes";
 
-function changeIsMobile(isMobile) {
+export function changeIsMobile(isMobile) {
     return {
         type: types.CHANGE_IS_MOBILE,
         isMobile

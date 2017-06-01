@@ -193,14 +193,14 @@ export function logoutUser() {
     }
 }
 
-function receiveAccessToken(accessToken) {
+export function receiveAccessToken(accessToken) {
     return {
         type: types.RECEIVE_ACCESS_TOKEN,
         accessToken
     };
 }
 
-function receiveAuthedPlaylists(playlists, songs, users) {
+export function receiveAuthedPlaylists(playlists, songs, users) {
     return {
         type: types.RECEIVE_AUTHED_PLAYLISTS,
         songs,
@@ -209,21 +209,21 @@ function receiveAuthedPlaylists(playlists, songs, users) {
     };
 }
 
-function receiveAuthedUser(user) {
+export function receiveAuthedUser(user) {
     return {
         type: types.RECEIVE_AUTHED_USER,
         user
     };
 }
 
-function receiveLikes(likes) {
+export function receiveLikes(likes) {
     return {
         type: types.RECEIVE_LIKES,
         likes
     };
 }
 
-function receiveNewStreamSongs({ songs, users, songIds, futureUrl }) {
+export function receiveNewStreamSongs({ songs, users, songIds, futureUrl }) {
     return {
         type: types.RECEIVE_NEW_STREAM_SONGS,
         songs,
