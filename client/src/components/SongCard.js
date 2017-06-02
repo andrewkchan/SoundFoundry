@@ -14,13 +14,40 @@ const propTypes = {
     dispatch: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,
     playSong: PropTypes.func.isRequired,
-    song: PropTypes.object.isRequired, //song object to display
-    user: PropTypes.object.isRequired //user object of the author of the song
+    song: PropTypes.object, //song object to display, will display placeholder if not present
+    user: PropTypes.object  //user object of the author of the song, will display placeholder if not present
 };
 
 class SongCard extends Component {
+    renderPlaceholder() {
+        return (
+            <div className="card song-card">
+                <div className="song-card-image placeholder"></div>
+                <div className="song-card-body">
+                    <div className="song-card-header">
+                        <div className="song-card-title-container">
+                            <div className="song-card-user clearfix">
+                                <div className="song-card-user-image placeholder"></div>
+                            </div>
+                            <div className="song-card-details">
+                                <div className="song-card-user-username placeholder"></div>
+                                <div className="song-card-title placeholder"></div>
+                            </div>
+                            <div className="song-waveform placeholder"></div>
+                        </div>
+                    </div>
+                    <div className="toggle-play-button"></div>
+                </div>
+            </div>
+        );
+    }
     render() {
         const { authed, dispatch, isActive, playSong, song, user } = this.props;
+
+        if (!song || !user) {
+            return this.renderPlaceholder();
+        }
+
         const isLiked = Boolean(song.id in authed.likes && authed.likes[song.id] === 1);
         const image = getImageUrl(song.artwork_url, IMAGE_SIZES.LARGE);
 

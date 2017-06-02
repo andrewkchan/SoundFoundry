@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import SongCard from "../components/SongCard";
+import Comments from "../components/Comments";
 import { SONG_PLAYLIST_SUFFIX } from "../constants/PlaylistConstants";
 
 import { getPlayingSongId } from "../utils/PlayerUtils";
 import { playSong } from "../actions/PlayerActions";
 import { fetchSongFullContentIfNeeded } from "../actions/SongActions";
-import { getImageUrl } from "../utils/SongUtils";
-import { formatSeconds } from "../utils/FormatUtils";
 
 const propTypes = {
     authed: PropTypes.object.isRequired,
@@ -39,33 +38,6 @@ class SongContainer extends Component {
         dispatch(playSong(songPlaylistId, i, percent));
     }
 
-    renderComments() {
-        const { songs, songId, users } = this.props;
-        const song = songs[songId];
-        if (song && song.comments) {
-            return song.comments.map((comment, i) => {
-                const user = comment.user;
-                const songTime = formatSeconds(Math.round(comment.timestamp/1000.0));
-                return (
-                    <div className="song-comment" key={i}>
-                        <img
-                            className="song-comment-img"
-                            src={getImageUrl(user.avatar_url)}
-                        />
-                        <div className="song-comment-body">
-                            <div className="song-comment-body-user">
-                                {`${user.username} at ${songTime}`}
-                            </div>
-                            <div className="song-comment-body-text">
-                                {comment.body}
-                            </div>
-                        </div>
-                    </div>
-                );
-            });
-        }
-    }
-
     render() {
         const { authed, dispatch, player, playlists, songs, songId, users } = this.props;
         const song = songs[songId];
@@ -84,12 +56,7 @@ class SongContainer extends Component {
                             song={song}
                             user={user}
                         />
-                        <div className="card song-comments">
-                            <div className="song-comments-header">
-                                Comments
-                            </div>
-                            {this.renderComments()}
-                        </div>
+                        <Comments comments={song.comments} />
                     </div>
                 </div>
             );

@@ -78,7 +78,13 @@
     @include flex(flex-start, flex-start);
     &-img {
         @include size(50px, 50px);
+        @include border-radius(5px, 5px, 5px, 5px);
+        background-size: cover;
         padding: 5px;
+        &.placeholder {
+            padding: 0;
+            background-color: $grey-off-white;
+        }
     }
     &-body {
         @include flex(flex-start, flex-start, column);
@@ -87,9 +93,19 @@
             margin-bottom: 2px;
             font-size: 0.95rem;
             font-weight: 500;
+            &.placeholder {
+                height: 0.9rem;
+                width: 10rem;
+                margin-bottom: 5px;
+                background-color: $grey-off-white;
+            }
         }
         &-text {
             font-size: 0.9rem;
+            &.placeholder {
+                width: 30rem;
+                height: 0.8rem;
+            }
         }
     }
 }
