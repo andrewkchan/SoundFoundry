@@ -65,6 +65,7 @@ class SongContainer extends Component {
                             <SmallSongCards
                                 authed={authed}
                                 dispatch={dispatch}
+                                endIndex={10}
                                 playingSongId={playingSongId}
                                 playlistId={songPlaylistId}
                                 playlists={playlists}

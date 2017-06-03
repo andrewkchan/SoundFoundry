@@ -2,6 +2,8 @@
 
 # SoundFoundry
 
+![alt text](https://theandrewchan.github.io/ffba3b4dfaa6fe8967bdb3d9181fea6e.jpg "Track page")
+
 ## Introduction
 
 SoundFoundry is a remake of the SoundCloud.com frontend using React and Redux. It features an infinitely scrollable track list drawn from SoundCloud and a fully featured streaming music player. Check out a demo [here](https://beautician-edward-85868.netlify.com/).
