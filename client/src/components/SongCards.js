@@ -120,7 +120,8 @@ class SongCards extends Component {
 
     renderSongs(start, end) {
         const { authed, dispatch, playlistId, playlists, playingSongId, songs, users } = this.props;
-        const items = playlistId in playlists ? playlists[playlistId].items : [];
+        const playlist = playlistId in playlists ? playlists[playlistId] : null;
+        const items = playlist ? playlist.items : [];
 
         const songCards = items.slice(start, end).map((songId, i) => {
             const song = songs[songId];

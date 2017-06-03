@@ -1,0 +1,132 @@
+.small-song-card {
+    padding: 1rem;
+    @include flex(flex-start, flex-start);
+
+    &-image {
+        @include border-radius(5px, 5px, 5px, 5px);
+        display: block;
+        order: 1;
+        width: 80px;
+        height: 80px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &-header {
+        @include flex(flex-start, flex-start);
+        order: 1;
+        flex: 1;
+        width: 100%;
+    }
+
+    &-body {
+        position: relative;
+        display: block;
+        order: 2;
+        flex: 1;
+        @include flex(flex-start, flex-start, column);
+        margin-left: 5px;
+        padding-left: 5px;
+    }
+
+    &-title {
+        display: block;
+        color: #222;
+        font-size: 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &-container {
+            @include flex(flex-start, flex-start, column);
+            width: 100%;
+        }
+    }
+
+    &-user {
+        display: block;
+        width: 100%;
+
+        &-image {
+            display: block;
+            @include size(1.6rem, 1.6rem);
+            margin-top: 4px;
+            margin-right: 10px;
+            border-radius: 100%;
+            float: left;
+        }
+
+        &-username {
+            display: block;
+            margin-right: 30px;
+            font-size: 0.8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    &-heart {
+        font-size: 14px;
+    }
+}
+
+$small-play-button-radius: 30px;
+
+.small-toggle-play-button {
+    position: absolute;
+    right: -45px;
+    top: 15px;
+    border-radius: 100%;
+    @include size($small-play-button-radius * 2, $small-play-button-radius * 2);
+    @include flex(center, center);
+    box-shadow: $button-shadow;
+    //padding-left: 4px;
+    margin-bottom: 5px;
+    background-color: #A6D2A5;;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+
+    &-icon {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 25px;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    &.active {
+        background-color: rgba(0, 0, 0, 0.8);
+
+        .small-toggle-play-button-icon {
+            position: relative;
+            color: #A6D2A5;
+            z-index: 2;
+        }
+    }
+
+    &.is-playing {
+        .ion-ios-play {
+            display: none;
+        }
+
+        .ion-radio-waves {
+            display: inline-block;
+        }
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+
+        .toggle-play-button-icon {
+            color: #A6D2A5;
+        }
+    }
+
+    .ion-radio-waves {
+        display: none;
+    }
+}

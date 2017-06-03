@@ -6,6 +6,7 @@
     border-left: 1px solid #e3e3e3;
     border-right: 1px solid #e3e3e3;
     font-size: 11px;
+
 }
 
 .comment-image {
@@ -76,6 +77,7 @@
     border-top: 1px solid #e8e8e8;
     overflow-x: hidden;
     @include flex(flex-start, flex-start);
+    max-width: 860px;
     &-img {
         @include size(50px, 50px);
         @include border-radius(5px, 5px, 5px, 5px);

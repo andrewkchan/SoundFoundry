@@ -94,7 +94,6 @@ $play-button-radius: 35px;
     @include size($play-button-radius * 2, $play-button-radius * 2);
     @include flex(center, center);
     box-shadow: $button-shadow;
-    //padding-left: 4px;
     margin-bottom: 5px;
     background-color: #A6D2A5;;
     transition: background-color 0.2s ease-in-out;

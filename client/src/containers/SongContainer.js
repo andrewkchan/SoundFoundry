@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import SongCard from "../components/SongCard";
 import Comments from "../components/Comments";
+import SmallSongCards from "../components/SmallSongCards";
 import { SONG_PLAYLIST_SUFFIX } from "../constants/PlaylistConstants";
 
 import { getPlayingSongId } from "../utils/PlayerUtils";
@@ -31,6 +32,7 @@ class SongContainer extends Component {
      * playSong
      * Plays the song at the given index of this song's related songs playlist.
      * @param   i   -The index of the related songs playlist to play.
+     * @param   percent -The percent progress through the track at which to begin playback
      */
     playSong(i, percent) {
         const { dispatch, songId } = this.props;
@@ -40,10 +42,12 @@ class SongContainer extends Component {
 
     render() {
         const { authed, dispatch, player, playlists, songs, songId, users } = this.props;
+        const songPlaylistId = String(songId) + SONG_PLAYLIST_SUFFIX;
         const song = songs[songId];
 
         if (song) {
-            const isActive = getPlayingSongId(player, playlists) === song.id;
+            const playingSongId = getPlayingSongId(player, playlists);
+            const isActive = playingSongId === song.id;
             const user = users[song.user_id];
             return (
                 <div className="content">
@@ -56,7 +60,19 @@ class SongContainer extends Component {
                             song={song}
                             user={user}
                         />
-                        <Comments comments={song.comments} />
+                        <div className="song-related-content">
+                            <Comments comments={song.comments} />
+                            <SmallSongCards
+                                authed={authed}
+                                dispatch={dispatch}
+                                playingSongId={playingSongId}
+                                playlistId={songPlaylistId}
+                                playlists={playlists}
+                                songs={songs}
+                                startIndex={1}
+                                users={users}
+                            />
+                        </div>
                     </div>
                 </div>
             );
@@ -64,6 +80,17 @@ class SongContainer extends Component {
             return (
                 <div className="content">
                     <div className="container">
+                        <SongCard
+                            authed={authed}
+                            dispatch={dispatch}
+                            isActive={false}
+                            playSong={() => {return;}}
+                            song={null}
+                            user={null}
+                        />
+                        <div className="song-related-content">
+                            <Comments comments={null} />
+                        </div>
                     </div>
                 </div>
             );

@@ -15,6 +15,7 @@ export const GENRES = [
 export const GENRES_MAP = GENRES.reduce((obj, genre) => {..., [genre]: 1}, {});
 
 export const IMAGE_SIZES = {
+    MEDIUM: "large",
     LARGE: "t300x300",
     XLARGE: "t500x500",
     ORIGINAL: "original"

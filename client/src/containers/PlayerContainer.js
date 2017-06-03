@@ -19,7 +19,7 @@ const propTypes = {
     users: PropTypes.object.isRequired
 };
 
-const VOLUME_SCALE = 0.6; //full volume hurts my ears...
+const VOLUME_SCALE = 0.5; //full volume hurts my ears...
 
 /*
 Player Container

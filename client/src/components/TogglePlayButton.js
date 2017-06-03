@@ -3,7 +3,8 @@ import { toggleIsPlaying } from "../actions/PlayerActions";
 
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isPlaying: PropTypes.bool.isRequired
+    isPlaying: PropTypes.bool.isRequired,
+    isSmall: PropTypes.bool
 };
 
 class TogglePlayButton extends Component {
@@ -18,14 +19,18 @@ class TogglePlayButton extends Component {
     }
 
     render() {
-        const { isPlaying } = this.props;
+        const { isPlaying, isSmall } = this.props;
+        let baseClass = "toggle-play-button";
+        if (isSmall) {
+            baseClass = "small-toggle-play-button";
+        }
         return (
             <div
-                className={`toggle-play-button active ${isPlaying ? "is-playing" : ""}`}
+                className={`${baseClass} active ${isPlaying ? "is-playing" : ""}`}
                 onClick={this.togglePlay}
             >
-                <i className="toggle-play-button-icon ion-radio-waves" />
-                <i className="toggle-play-button-icon ion-ios-play" />
+                <i className={`${baseClass}-icon ion-radio-waves`} />
+                <i className={`${baseClass}-icon ion-ios-play`} />
             </div>
         );
     }
