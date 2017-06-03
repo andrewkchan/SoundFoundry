@@ -196,6 +196,16 @@ class Nav extends Component {
                                 <NavSearch dispatch={dispatch} />
                             </div>
                             <div className="nav-item">
+                                <div className="nav-user-link">
+                                    <a
+                                        style={{ color: "white" }}
+                                        href="https://github.com/theandrewchan/SoundFoundry/issues/new"
+                                        title="Report a bug">
+                                        <i className="icon ion-bug" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="nav-item">
                                 {this.renderNavUser()}
                             </div>
                         </div>
