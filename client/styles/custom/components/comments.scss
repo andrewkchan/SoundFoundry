@@ -14,6 +14,7 @@
     margin-top: 1rem;
     padding: 1rem;
     @include flex(flex-start, flex-start, column);
+    flex: 2;
     &-header {
         margin-bottom: 1rem;
         text-transform: capitalize;

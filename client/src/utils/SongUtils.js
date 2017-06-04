@@ -12,20 +12,20 @@ export function constructCategoryUrl(cat) {
     `${CLIENT_ID}&limit=50&offset=0`;
 
     if (category in GENRES_MAP) {
-    if (category !== 'house'
-    && category !== 'trance'
-    && category !== 'dubstep') {
-      category = `${category} house`;
-    }
+        if (category !== 'house'
+            && category !== 'trance'
+            && category !== 'dubstep') {
+          category = `${category} house`;
+        }
 
-    result += `&tags=${category}`;
+        result += `&tags=${category}`;
     } else {
-    result += `&q=${category}`;
+        result += `&q=${category}`;
     }
 
     if (catArr.length > 1) {
-    const formattedTime = moment().subtract(catArr[1], 'days').format('YYYY-MM-DD%2012:00:00');
-    result += `&created_at[from]=${formattedTime}`;
+        const formattedTime = moment().subtract(catArr[1], 'days').format('YYYY-MM-DD%2012:00:00');
+        result += `&created_at[from]=${formattedTime}`;
     }
 
     return result;

@@ -28,6 +28,13 @@ class SongContainer extends Component {
         this.playSong = this.playSong.bind(this);
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        const { dispatch, songId } = this.props;
+        if (nextProps.songId !== songId) {
+            dispatch(fetchSongFullContentIfNeeded(nextProps.songId));
+        }
+    }
+
     /*
      * playSong
      * Plays the song at the given index of this song's related songs playlist.

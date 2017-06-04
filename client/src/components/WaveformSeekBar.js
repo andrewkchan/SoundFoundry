@@ -38,20 +38,40 @@ class WaveformSeekBar extends Component {
         this.canvas.height = this.canvas.offsetHeight;
         this.updateCanvas();
     }
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         this.updateCanvas();
     }
     componentWillReceiveProps(nextProps) {
-        const { song, player, initialProgress } = nextProps;
-        const { percent } = this.state;
-        const { waveform } = song;
-        if (this.props.song.waveform !== waveform && waveform) {
-            plotWaveform(waveform, this.canvas);
-        }
-        if (!player.isSeeking && initialProgress !== percent) {
+        const { song, songId, player, initialProgress } = nextProps;
+
+        // are we receiving a new song entirely?
+        if (songId !== this.props.songId) {
             this.setState({
-                percent: initialProgress
+                percent: (initialProgress ? initialProgress : 0),
+                mousePercent: 0
             });
+        } else {
+            // otherwise we know we have received new information about the current song
+            const { percent } = this.state;
+            const { waveform } = song;
+            if (this.props.song.waveform !== waveform && waveform) {
+                // handle receiving a waveform for the current song
+                plotWaveform(waveform, this.canvas);
+            }
+            if (!player.isSeeking && initialProgress !== percent) {
+                this.setState({
+                    percent: initialProgress
+                });
+            }
+        }
+    }
+    componentWillUpdate(nextProps, nextState) {
+        const { dispatch, song, songId, player, initialProgress } = nextProps;
+        if (songId !== this.props.songId) {
+            // fetch the new song's waveform if not already present
+            if (!song.waveform) {
+                dispatch(fetchSongWaveform(songId, song));
+            }
         }
     }
 
