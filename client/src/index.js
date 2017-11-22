@@ -8,6 +8,7 @@ import '../styles/main.scss';
 
 const store = configureStore(undefined);
 
+Raven.config('https://4fe1e8c312f74523abb5363481c9b162@sentry.io/248851').install();
 ReactDOM.render(
     <Provider store={store}>
         <App />
