@@ -2,7 +2,7 @@
 
 # SoundFoundry
 
-![alt text](https://theandrewchan.github.io/ffba3b4dfaa6fe8967bdb3d9181fea6e.jpg "Track page")
+![alt text](https://raw.githubusercontent.com/theandrewchan/theandrewchan.github.io/master/assets/soundfoundry1.jpg "Track page")
 
 ## Introduction
 
